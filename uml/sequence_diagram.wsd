@@ -1,51 +1,53 @@
-@startuml usecase
-left to right direction
+title Purchase Plants Sequence Diagram
 
-' ==== Actors ====
-:User:
-:Horticulturist:
-:Customer:
+Customer->Browser: Select plant & click "Add to Cart"
+Browser->WebApp: POST /cart/add
+WebApp->Auth: validateSession()
+Auth-->WebApp: valid
 
-User <|-- Horticulturist
-User <|-- Customer
+WebApp->Cart: addItem(userId, plantId)
+Cart->DB: INSERT cart_item
+DB-->Cart: success
+Cart-->WebApp: item added
+WebApp-->Browser: cart updated
 
-' ==== System Boundary ====
-package "Plant Shop Web App" {
+Customer->Browser: Open Cart
+Browser->WebApp: GET /cart
+WebApp->Auth: validateSession()
+Auth-->WebApp: valid
 
-    (Register Account) as UC1
-    (Log In) as UC2
+WebApp->Cart: getCart()
+Cart->DB: SELECT cart items
+DB-->Cart: results
+Cart-->WebApp: cart items
+WebApp-->Browser: render cart page
 
-    (View Plant Inventory) as UC3
-    (Create Plant Listing) as UC4
+Customer->Browser: Click "Order Now"
+Browser->WebApp: POST /orders/checkout
+WebApp->Auth: validateSession()
+Auth-->WebApp: valid
 
-    (View Plants for Sale) as UC5
-    (Filter by Category) as UC6
-    (Add Plant to Cart) as UC7
-    (Purchase Plants) as UC8
-    (View Order History) as UC9
-}
+WebApp->Cart: getCart()
+Cart->DB: SELECT cart items
+DB-->Cart: results
+Cart-->WebApp: cart items
 
-' ==== Relationships ====
+alt cart empty
+    WebApp-->Browser: show "Cart is empty"
+else cart has items
+    WebApp->Order: createOrder(cartItems)
+    Order->DB: INSERT order
+    DB-->Order: order ID
+    Order->DB: INSERT order items
+    DB-->Order: success
+    Order->DB: UPDATE plant quantities
+    DB-->Order: success
+    Order-->WebApp: confirmation
 
-' ---- Universal User Actions ----
-User --> UC1
-User --> UC2
+    WebApp->Cart: clearCart()
+    Cart->DB: DELETE cart items
+    DB-->Cart: success
+    Cart-->WebApp: cleared
 
-' ---- Horticulturist ----
-Horticulturist --> UC3
-Horticulturist --> UC4
-Horticulturist --> UC5
-Horticulturist --> UC6
-
-' ---- Customer ----
-Customer --> UC5
-Customer --> UC6
-Customer --> UC7
-Customer --> UC8
-Customer --> UC9
-
-' ---- Includes ----
-UC5 .> UC6 : <<include>>
-UC8 .> UC7 : <<include>>
-
-@enduml
+    WebApp-->Browser: render order confirmation
+end
