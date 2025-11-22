@@ -28,7 +28,7 @@ As a logged-in horticulturist, I want to view all of the plants I have for sale 
 
 #### Allotted Story Points: 3
 
-As a logged-in horticulturist, I want to create a plant listing with information about the plant's name, color, type, required climate, and price, so that I can publish a plant listing and sell it to customers. Given that I have entered in the required plant information, when I hit the "List" button, then the plant is saved into the system and can be purchased by customers.
+As a logged-in horticulturist, I want to create a plant listing with information about the plant's name, color, variety, required climate, and price, so that I can publish a plant listing and sell it to customers. Given that I have entered in the required plant information, when I hit the "List" button, then the plant is saved into the system and can be purchased by customers.
 
 ### User Story #4: View Plants for Sale
 
