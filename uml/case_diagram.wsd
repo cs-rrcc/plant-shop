@@ -1,0 +1,51 @@
+@startuml usecase
+left to right direction
+
+' ==== Actors ====
+:User:
+:Horticulturist:
+:Customer:
+
+User <|-- Horticulturist
+User <|-- Customer
+
+' ==== System Boundary ====
+package "Plant Shop Web App" {
+
+    (Register Account) as UC1
+    (Log In) as UC2
+
+    (View Plant Inventory) as UC3
+    (Create Plant Listing) as UC4
+
+    (View Plants for Sale) as UC5
+    (Filter by Category) as UC6
+    (Add Plant to Cart) as UC7
+    (Purchase Plants) as UC8
+    (View Order History) as UC9
+}
+
+' ==== Relationships ====
+
+' ---- Universal User Actions ----
+User --> UC1
+User --> UC2
+
+' ---- Horticulturist ----
+Horticulturist --> UC3
+Horticulturist --> UC4
+Horticulturist --> UC5
+Horticulturist --> UC6
+
+' ---- Customer ----
+Customer --> UC5
+Customer --> UC6
+Customer --> UC7
+Customer --> UC8
+Customer --> UC9
+
+' ---- Includes ----
+UC5 .> UC6 : <<include>>
+UC8 .> UC7 : <<include>>
+
+@enduml
