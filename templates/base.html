@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Unbeleafable Plant Shop{% endblock %}</title>
+
+    <!-- Link to static CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+<header>
+    {% block header %}
+    <h1>Unbeleafable Plant Shop</h1>
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+
+        {% if current_user.is_authenticated %}
+            {% if current_user.role == 'horticulturist' %}
+                <a href="{{ url_for('seller_dashboard') }}">Seller Dashboard</a>
+                <a href="{{ url_for('create_plant') }}">Create Plant</a>
+            {% else %}
+                <a href="{{ url_for('customer_dashboard') }}">Customer Dashboard</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('signup') }}">Sign Up</a>
+        {% endif %}
+    </nav>
+    {% endblock %}
+</header>
+
+<!-- Flash messages -->
+<div id="flash-messages">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category|lower }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<main>
+    {% block main %}{% endblock %}
+</main>
+
+<script>
+    // Hide flash messages after 5 seconds
+    window.addEventListener('DOMContentLoaded', function () {
+        const flashContainer = document.getElementById('flash-messages');
+        if (!flashContainer || !flashContainer.children.length) return;
+
+        setTimeout(() => flashContainer.style.display = 'none', 5000);
+    });
+</script>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

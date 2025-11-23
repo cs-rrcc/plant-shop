@@ -1,0 +1,141 @@
+/* ---------- Global Layout ---------- */
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+}
+
+header {
+    background: #2f855a;
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+nav a {
+    color: #f0fff4;
+    margin-left: 1rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 2rem;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+/* ---------- Flash Messages ---------- */
+#flash-messages {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+}
+
+.flash {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    background: #edf2ff;
+    color: #1a202c;
+    min-width: 220px;
+}
+
+.flash.success {
+    background: #c6f6d5;
+    color: #22543d;
+}
+
+.flash.error {
+    background: #fed7d7;
+    color: #742a2a;
+}
+
+.flash.info {
+    background: #bee3f8;
+    color: #1a365d;
+}
+
+/* ---------- Buttons/Links ---------- */
+a.button-link {
+    display: inline-block;
+    padding: 0.5rem 0.9rem;
+    border-radius: 4px;
+    background: #2b6cb0;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+a.button-link:hover {
+    background: #2c5282;
+}
+
+/* ---------- Tables ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: #fff;
+}
+
+th, td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+th {
+    background: #edf2f7;
+}
+
+/* ---------- Forms ---------- */
+form .field {
+    margin-bottom: 0.75rem;
+}
+
+form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 0.4rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #cbd5e0;
+}
+
+form .errors {
+    color: #c53030;
+    font-size: 0.85rem;
+}
+
+form input[type="submit"] {
+    width: auto;
+    cursor: pointer;
+    background: #2b6cb0;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+}
+
+form input[type="submit"]:hover {
+    background: #2c5282;
+}
