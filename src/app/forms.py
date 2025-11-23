@@ -1,8 +1,7 @@
-'''
-CSC3020
-Authors:
-Notes:
-'''
+"""
+Author(s):
+Description:
+"""
 
 from flask_wtf import FlaskForm
 from wtforms import *
@@ -50,5 +49,5 @@ class PlantForm(FlaskForm):
     )
 
     quantity = IntegerField('Quantity', validators=[DataRequired()])
-    price = DecimalField('Price', validators=[DataRequired()])
+    price = DecimalField('Price', places=2, validators=[DataRequired()])
     submit = SubmitField('List')

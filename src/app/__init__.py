@@ -1,8 +1,7 @@
-'''
-CSC3020
-Authors:
-Notes: Imports are separated to avoid circular import issues.
-'''
+"""
+Author: Mckenna
+Description:
+"""
 
 from flask import Flask
 from flask_login import LoginManager

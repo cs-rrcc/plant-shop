@@ -1,7 +1,6 @@
 # Overview of Unbeleafable
 
-The Unbeleafable Plant Shop is an online marketplace that connects horticulturists with customers who want to buy plants. Sellers can create listings, manage inventory, and track sales, while customers can browse plants, 
-filter by category, make purchases, and view past orders. The system provides a simple, convenient interface for both buyers and growers, targeting local plant sellers and customers looking to build or expand their gardens.
+The Unbeleafable Plant Shop is an online marketplace that connects horticulturists with customers who want to buy plants. Sellers can create listings, manage inventory, and track sales, while customers can browse plants, filter by category, make purchases, and view past orders. The system provides a simple, convenient interface for both buyers and growers, targeting local plant sellers and customers looking to build or expand their gardens.
 
 # Design
 
@@ -27,7 +26,7 @@ As a logged-in horticulturist, I want to view all of the plants I have for sale 
 
 #### Allotted Story Points: 3
 
-As a logged-in horticulturist, I want to create a plant listing with information about the plant's name, color, variety, required climate, and price, so that I can publish a plant listing and sell it to customers. Given that I have entered in the required plant information, when I hit the "List" button, then the plant is saved into the system and can be purchased by customers.
+As a logged-in horticulturist, I want to create a plant listing with information about the plant's name, color, variety, quantity, required climate, and price, so that I can publish a plant listing and sell it to customers. Given that I have entered in the required plant information, when I hit the "List" button, then the plant is saved into the system and can be purchased by customers.
 
 ### User Story #4: View Plants for Sale
 
@@ -71,15 +70,15 @@ Embed an image of the burndown chart here.
 
 In this section, share the results of the tests performed to verify the quality of the developed product, including the test coverage relative to the written code. Test coverage indicates how much of your code is exercised by tests, helping assess reliability. There is no minimum coverage requirement, but ensure there is at least some coverage through one white-box test (which examines internal logic and structure) and one black-box test (which validates functionality from the user’s perspective).
 
-| User Story | Feature/Function                 | Date     | Time  | Result |
-| ---------- | -------------------------------- | -------- | ----- | ------ |
-|            |                                  |          |       |        |
-|            |                                  |          |       |        |
-|            |                                  |          |       |        |
-|            |                                  |          |       |        |
-|            |                                  |          |       |        |
-|            |                                  |          |       |        |
-|            |                                  |          |       |        |
-|            |                                  |          |       |        |
-|            |                                  |          |       |        |
-|            |                                  |          |       |        |
+| User Story | Feature/Function | Date | Time | Result |
+| ---------- | ---------------- | ---- | ---- | ------ |
+|            |                  |      |      |        |
+|            |                  |      |      |        |
+|            |                  |      |      |        |
+|            |                  |      |      |        |
+|            |                  |      |      |        |
+|            |                  |      |      |        |
+|            |                  |      |      |        |
+|            |                  |      |      |        |
+|            |                  |      |      |        |
+|            |                  |      |      |        |

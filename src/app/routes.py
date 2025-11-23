@@ -1,23 +1,25 @@
-'''
-CSC3020
+"""
+Author(s):
 Description:
-Notes:
-'''
+"""
 
 
-from flask import render_template, redirect, url_for, request, flash
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import flash, redirect, render_template, url_for
+from flask_login import current_user, login_user, login_required, logout_user
 
 import bcrypt
 
 from app import app, db
-from app.models import User, Plant
-from app.forms import SignUpForm, LoginForm, PlantForm
 from app.auth import role_required
+from app.forms import LoginForm, PlantForm, SignUpForm
+from app.models import Plant, User
 
-# ===========================
-# SIGN UP
-# ===========================
+
+@app.route('/')
+@app.route('/index')
+@app.route('/index.html')
+def index():
+    return render_template('index.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -25,15 +27,15 @@ def signup():
     form = SignUpForm()
     if form.validate_on_submit():
         if form.password.data != form.password_confirmation.data:
-            flash("Incorrect Password!", "Error")
+            flash("Passwords do not match!", "Error")
             return redirect(url_for('signup'))
         try:
-            raw_password = form.password.data.encode()
-            hashed_password = bcrypt.hashpw(raw_password, bcrypt.gensalt())
             user = User(
                 name=form.name.data,
                 email=form.email.data.strip().lower(),
-                password=hashed_password,
+                password=bcrypt.hashpw(
+                    form.password.data.encode("utf-8"),
+                    bcrypt.gensalt()),
                 role=form.role.data
                 )
 
@@ -46,34 +48,29 @@ def signup():
         except Exception:
             db.session.rollback()
             flash("Something Went Wrong Creating Your Account", "Error")
-            return redirect(Url_for('display_error'))
+            return redirect(url_for('error_page'))
 
     return render_template('signup.html', form=form)
 
-# ===========================
-# LOGIN
-# ===========================
 
-
-@app.route('/login', methods=['GET', 'Post'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data.lower()).first()
-        if user and bcrypt.checkpw(form.password.data.encode(), user.password):
+        if user and bcrypt.checkpw(
+            form.password.data.encode("utf-8"),
+            user.password
+        ):
             login_user(user)
 
             if user.role == 'horticulturist':
-                return redirect(Url_for('seller_dashboard'))
+                return redirect(url_for('seller_dashboard'))
             return redirect(url_for('customer_dashboard'))
         else:
             flash("Invalid email or password", "Error")
 
     return render_template('login.html', form=form)
-
-# ===========================
-# LOGOUT
-# ===========================
 
 
 @app.route('/logout', methods=["GET"])
@@ -81,14 +78,40 @@ def login():
 def logout():
     logout_user()
     flash("Successfully logged out", "Success")
-    return redirect(url_for('login'))
-
-# ===========================
-# CREATE PLANT (HORTICULTURIST ONLY)
-# ===========================
+    return redirect(url_for('index'))
 
 
-@app.route('/plants/create', methods=['GET', 'POST'])
+def get_all_plant_listings():
+    return Plant.query.all()
+
+
+def get_plants_by_seller(id):
+    return (
+        Plant.query.filter_by(seller_id=id)
+        .order_by(Plant.quantity.asc())
+        .all()
+    )
+
+
+def get_plants_by_category(category):
+    pass
+
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+@role_required('horticulturist')
+def seller_dashboard():
+    seller_listings = get_plants_by_seller(current_user.id)
+    all_listings = get_all_plant_listings()
+    return render_template(
+        'seller_dashboard.html',
+        seller_listings=seller_listings,
+        all_listings=all_listings
+    )
+
+
+# Create a new plant listing for the logged-in horticulturist.
+@app.route('/createplant', methods=['GET', 'POST'])
 @login_required
 @role_required('horticulturist')
 def create_plant():
@@ -101,19 +124,48 @@ def create_plant():
                 variety=form.variety.data,
                 climate=form.climate.data,
                 quantity=form.quantity.data,
-                price=float(form.price.data)
-                )
+                price=form.price.data,
+                seller_id=current_user.id
+            )
 
             db.session.add(plant)
             db.session.commit()
 
             flash("Plant Listing Created", "Success")
-            return redirect(url_for('display_error'))
+            return redirect(url_for('seller_dashboard'))
 
         except Exception:
             db.session.rollback()
 
             flash("Error Creating Plant Listing", "Error")
-            return redirect(url_for('display_error'))
+            return redirect(url_for('error_page'))
 
     return render_template('create_plant.html', form=form)
+
+
+@app.route('/updateplant/<int:plant_id>', methods=['GET', 'POST'])
+@login_required
+@role_required('horticulturist')
+def update_plant(plant_id):
+    form = PlantForm()
+    plant = Plant.query.get_or_404(plant_id)
+
+    if not form.is_submitted():
+        form.process(obj=plant)
+
+    if form.validate_on_submit():
+        try:
+            form.populate_obj(plant)
+            db.session.commit()
+
+            return redirect(url_for('seller_dashboard'))
+
+        except Exception:
+            db.session.rollback()
+            return redirect(url_for('error_page'))
+    return render_template('update_plant.html', form=form,)
+
+
+@app.route('/error', methods=['GET'])
+def error_page():
+    return render_template('error.html')
