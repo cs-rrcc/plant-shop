@@ -1,8 +1,7 @@
 # Overview of Unbeleafable
 
-Use this section to present the product vision, which is a clear statement of the overall goal and purpose of the product—what it aims to achieve, why it exists, and the target audience. Include a **use case diagram** that illustrates the main user interactions. This will give readers a clear and comprehensive overview of the project.
-
-The goal of this project is to develop a web application that optimizes the sale, purchase, and distribution of plants, flowers, and other greenery. Below is an image of a use case diagram detailing how you, a customer or horticulturist, will be able to interact with this web application.
+The Unbeleafable Plant Shop is an online marketplace that connects horticulturists with customers who want to buy plants. Sellers can create listings, manage inventory, and track sales, while customers can browse plants, 
+filter by category, make purchases, and view past orders. The system provides a simple, convenient interface for both buyers and growers, targeting local plant sellers and customers looking to build or expand their gardens.
 
 # Design
 
@@ -71,3 +70,16 @@ Embed an image of the burndown chart here.
 # Testing
 
 In this section, share the results of the tests performed to verify the quality of the developed product, including the test coverage relative to the written code. Test coverage indicates how much of your code is exercised by tests, helping assess reliability. There is no minimum coverage requirement, but ensure there is at least some coverage through one white-box test (which examines internal logic and structure) and one black-box test (which validates functionality from the user’s perspective).
+
+| User Story | Feature/Function                 | Date     | Time  | Result |
+| ---------- | -------------------------------- | -------- | ----- | ------ |
+|            |                                  |          |       |        |
+|            |                                  |          |       |        |
+|            |                                  |          |       |        |
+|            |                                  |          |       |        |
+|            |                                  |          |       |        |
+|            |                                  |          |       |        |
+|            |                                  |          |       |        |
+|            |                                  |          |       |        |
+|            |                                  |          |       |        |
+|            |                                  |          |       |        |
