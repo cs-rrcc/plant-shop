@@ -58,13 +58,17 @@ Include a **class diagram** that clearly describes the **model classes** used in
 
 This section should describe, in general terms, how Scrum was applied in the project. Include a table summarizing the division of the project into sprints, the **user story** goals planned for each sprint, the ones actually completed, and the start and end dates of each sprint. You may also add any relevant observations or reflections about the sprints as you see fit.
 
-| Sprint# | Goals           | Start    | End      | Done | Observations |
-| ------- | --------------- | -------- | -------- | ---- | ------------ |
-| 1       | US#1, US#2, ... | mm/dd/23 | mm/dd/23 | US#1 | ...          |
+| Sprint# | Goals            | Start    | End      | Done | Observations                                                                                                                                                     |
+| ------- | ---------------- | -------- | -------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | US#1, US#2, US#3 | 11/19/25 | 11/25/25 |      | It was tedious for the group<br />to plan the whole project, <br />refine all the user stories,<br />and build the project<br />files from the ground<br />up. |
+| 2       |                  |          |          |      |                                                                                                                                                                  |
+| 3       |                  |          |          |      |                                                                                                                                                                  |
 
 As in Project 2, you should take notes on the major Scrum meetings: planning, daily scrums, review, and retrospective. These meetings are essential for tracking progress, identifying obstacles, and ensuring continuous improvement. Use the Scrum folder and the shared templates to record your notes in an organized and consistent manner.
 
 Embed an image of the burndown chart here.
+
+![Scrum Burndown Chart](scrum/burndown_chart.png "Scrum Burndown Chart")
 
 # Testing
 

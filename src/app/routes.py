@@ -97,7 +97,14 @@ def get_plants_by_category(category):
     pass
 
 
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/buydashboard', methods=['GET', 'POST'])
+@login_required
+@role_required('customer')
+def customer_dashboard():
+    return render_template('customer_dashboard.html')
+
+
+@app.route('/listdashboard', methods=['GET', 'POST'])
 @login_required
 @role_required('horticulturist')
 def seller_dashboard():
@@ -163,7 +170,7 @@ def update_plant(plant_id):
         except Exception:
             db.session.rollback()
             return redirect(url_for('error_page'))
-    return render_template('update_plant.html', form=form,)
+    return render_template('update_plant.html', plant=plant, form=form,)
 
 
 @app.route('/error', methods=['GET'])
