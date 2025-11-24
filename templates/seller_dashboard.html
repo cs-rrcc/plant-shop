@@ -1,6 +1,72 @@
 {% extends 'base.html' %}
 {% block header %}
-{{ super() }}
+    {{ super() }}
 {% endblock %}
 {% block main %}
+    <h2>My Plants Listings</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Variety</th>
+            <th>Climate</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Manage Listing</th>
+        </tr>
+
+    {% if seller_listings %}
+        {% for listing in seller_listings %}
+            <tr>
+                <td> {{listing.name}} </td>
+                <td> {{listing.color}} </td>
+                <td> {{listing.variety}} </td>
+                <td> {{listing.climate}} </td>
+                <td> {{listing.quantity}} </td>
+                <td> {{listing.price}} </td>
+                <td>
+                    <a href="{{ url_for('update_plant', plant_id=listing.id) }}">
+                        <button class="button">Update {{listing.name}} Listing</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}    
+    {% else %}
+            <tr>
+                <td>You have not listed any plants yet.</td>
+            </tr>
+    {% endif %}
+    </table>
+
+    <h2>Competitor Plant Listings</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Variety</th>
+            <th>Climate</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+
+    {% if all_listings %}
+        {% for listing in all_listings %}
+            {% if current_user.id != listing.seller_id %}
+                <tr>
+                    <td> {{listing.name}} </td>
+                    <td> {{listing.color}} </td>
+                    <td> {{listing.variety}} </td>
+                    <td> {{listing.climate}} </td>
+                    <td> {{listing.quantity}} </td>
+                    <td> {{listing.price}} </td>
+                </tr>
+            {% endif %}
+        {% endfor %}    
+    {% else %}
+            <tr>
+                <td>No other plants have been listed yet.</td>
+            </tr>
+    {% endif %}
+    </table>
+
 {% endblock %}

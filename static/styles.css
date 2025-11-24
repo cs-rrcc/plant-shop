@@ -70,7 +70,7 @@ main {
 }
 
 /* ---------- Buttons/Links ---------- */
-a.button-link {
+a.button-link, .button {
     display: inline-block;
     padding: 0.5rem 0.9rem;
     border-radius: 4px;
@@ -80,7 +80,7 @@ a.button-link {
     font-size: 0.9rem;
 }
 
-a.button-link:hover {
+a.button-link:hover, .button:hover {
     background: #2c5282;
 }
 
