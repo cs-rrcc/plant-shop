@@ -1,4 +1,14 @@
+@startuml
+
 title Purchase Plants Sequence Diagram
+
+participant User
+boundary Browser
+participant WebApp
+participant Auth
+entity Cart
+entity Order
+database DB
 
 Customer->Browser: Select plant & click "Add to Cart"
 Browser->WebApp: POST /cart/add
@@ -51,3 +61,5 @@ else cart has items
 
     WebApp-->Browser: render order confirmation
 end
+
+@enduml
