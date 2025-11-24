@@ -2,13 +2,13 @@
 
 The Unbeleafable Plant Shop is an online marketplace that connects horticulturists with customers who want to buy plants. Sellers can create listings, manage inventory, and track sales, while customers can browse plants, filter by category, make purchases, and view past orders. The system provides a simple, convenient interface for both buyers and growers, targeting local plant sellers and customers looking to build or expand their gardens.
 
+![Unbeleafable Use Case Diagram](uml/use_case.png "Unbeleafable Use Case Diagram")
+
 # Design
 
 ## User Stories
 
-Describe the **user stories** for the project, which are short, simple descriptions of a feature told from the perspective of the end user. Each **user story** should include clear **acceptance criteria** and a **point estimate**. The **user stories** must align with the **use case diagram** and should be labeled as US#1, US#2, and so on. We suggest creating a separate Markdown section for each **user story**.
-
-This section describes key user stories identified for the project.
+This section describes the user stories identified for the project.
 
 ### User Story #1: User Registration
 
@@ -50,9 +50,14 @@ As a customer, I want to view my previous plant orders so that I can keep track 
 
 At least one **user story**, unrelated to user creation or authentication, must be detailed using a **sequence diagram**. A **sequence diagram** is a type of UML diagram that shows how objects interact in a particular scenario, emphasizing the order of messages exchanged between components over time. This helps visualize the flow of operations and the responsibilities of different parts of the system.
 
+![Sequence Diagram](uml/sequence_diagram.png "Sequence Diagram")
+
 ## Class Model Diagram
 
 Include a **class diagram** that clearly describes the **model classes** used in the project and their associations. A **class diagram** is a UML diagram that represents the structure of the system by showing its classes, their attributes, methods, and the relationships between them (such as inheritance, aggregation, or composition). This helps visualize how the data and logic are organized within the application.
+
+![Class Model Diagram](uml/class_diagram.png "Class Model Diagram")
+
 
 # Development Process
 
@@ -74,9 +79,14 @@ Embed an image of the burndown chart here.
 
 In this section, share the results of the tests performed to verify the quality of the developed product, including the test coverage relative to the written code. Test coverage indicates how much of your code is exercised by tests, helping assess reliability. There is no minimum coverage requirement, but ensure there is at least some coverage through one white-box test (which examines internal logic and structure) and one black-box test (which validates functionality from the user’s perspective).
 
+### Black Box Testing Results
+
+### White Box Testing Results
+
+### Manual Testing Results
+
 | User Story | Feature/Function | Date | Time | Result |
 | ---------- | ---------------- | ---- | ---- | ------ |
-|            |                  |      |      |        |
 |            |                  |      |      |        |
 |            |                  |      |      |        |
 |            |                  |      |      |        |
