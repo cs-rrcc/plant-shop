@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block header %}
+    {{ super() }}
+{% endblock %}
+{% block main %}
+    <h2>Sign Up</h2>
+
+    <form method="post" action="" novalidate>
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.name.label }}
+            {{ form.name(size=35) }}
+        </div>
+        
+        <div>
+            {{ form.email.label }}
+            {{ form.email(size=35) }}
+        </div>
+        
+        <div>
+            {{ form.password.label }}
+            {{ form.password(size=35) }}
+        </div>
+
+        <div>
+            {{ form.password_confirmation.label }}
+            {{ form.password_confirmation(size=35) }}
+        </div>
+
+        <div>
+            {{ form.role.label }}
+            {{ form.role() }}
+        </div>
+        
+        <div>
+            {{ form.submit() }}
+        </div>
+
+    </form>
+
+{% endblock %}

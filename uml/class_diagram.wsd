@@ -1,0 +1,69 @@
+@startuml UnbeleafableObjects
+
+enum Role{
+    CUSTOMER
+    HORTICULTURIST
+}
+
+class User {
+    - *id: integer
+    - name: String
+    - email: String
+    - password: LargeBinary
+    - role: Role
+}
+
+class Plant {
+    - *id: integer
+    - name: String
+    - color: String
+    - variety: String
+    - climate: String
+    - quantity: integer
+    - price: double
+    - sellerId: integer
+}
+
+enum CartStatus {
+    ACTIVE
+    INACTIVE
+}
+
+class Cart {
+    - *id: integer
+    - customerId: integer
+    - cartStatus: CartStatus
+}
+
+class CartItem {
+    - *id: integer
+    - price: double
+    - quantity: integer
+}
+
+class Order {
+    - *id: integer
+    - orderDate: DateTime
+    - status: OrderStatus
+    - customerId: integer
+}
+
+class OrderItem {
+    - *id: integer
+    - price: double
+    - quantity: integer
+}
+
+User "1" *-- "0..*" Plant: sells
+User "1" o-- "0..*" Cart : has
+User "1" o-- "0..*" Order: orders
+
+Cart "1" *-- "0..*" CartItem : holds
+CartItem "1" --> "1" Plant : references
+
+Cart "1" --> "1" Order: can become
+
+Order "1" *-- "1..*" OrderItem: contains
+OrderItem "1" --> "1" Plant: references
+
+@enduml

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block header %}
+    {{ super() }}
+{% endblock %}
+{% block main %}
+    <h2>Create a New Plant Listing</h2>
+
+    <form method="post" action="" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div>
+            {{ form.name.label }}
+            {{ form.name(size=40) }}
+        </div>
+
+        <div>
+            {{ form.color.label }}
+            {{ form.color(size=40) }}
+        </div>
+
+        <div>
+            {{ form.variety.label }}
+            {{ form.variety() }}
+        </div>
+        
+        <div>
+            {{ form.climate.label }}
+            {{ form.climate() }}
+        </div>
+
+        <div>
+            {{ form.quantity.label }}
+            {{ form.quantity(size=30) }}
+        </div>
+
+        <div>
+            {{ form.price.label }}
+            {{ form.price(size=30) }}
+        </div>
+
+        <div>
+            {{ form.submit() }}
+        </div>        
+    </form>
+
+{% endblock %}

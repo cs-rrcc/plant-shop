@@ -1,0 +1,65 @@
+@startuml
+
+title Purchase Plants Sequence Diagram
+
+participant User
+boundary Browser
+participant WebApp
+participant Auth
+entity Cart
+entity Order
+database DB
+
+Customer->Browser: Select plant & click "Add to Cart"
+Browser->WebApp: POST /cart/add
+WebApp->Auth: validateSession()
+Auth-->WebApp: valid
+
+WebApp->Cart: addItem(userId, plantId)
+Cart->DB: INSERT cart_item
+DB-->Cart: success
+Cart-->WebApp: item added
+WebApp-->Browser: cart updated
+
+Customer->Browser: Open Cart
+Browser->WebApp: GET /cart
+WebApp->Auth: validateSession()
+Auth-->WebApp: valid
+
+WebApp->Cart: getCart()
+Cart->DB: SELECT cart items
+DB-->Cart: results
+Cart-->WebApp: cart items
+WebApp-->Browser: render cart page
+
+Customer->Browser: Click "Order Now"
+Browser->WebApp: POST /orders/checkout
+WebApp->Auth: validateSession()
+Auth-->WebApp: valid
+
+WebApp->Cart: getCart()
+Cart->DB: SELECT cart items
+DB-->Cart: results
+Cart-->WebApp: cart items
+
+alt cart empty
+    WebApp-->Browser: show "Cart is empty"
+else cart has items
+    WebApp->Order: createOrder(cartItems)
+    Order->DB: INSERT order
+    DB-->Order: order ID
+    Order->DB: INSERT order items
+    DB-->Order: success
+    Order->DB: UPDATE plant quantities
+    DB-->Order: success
+    Order-->WebApp: confirmation
+
+    WebApp->Cart: clearCart()
+    Cart->DB: DELETE cart items
+    DB-->Cart: success
+    Cart-->WebApp: cleared
+
+    WebApp-->Browser: render order confirmation
+end
+
+@enduml

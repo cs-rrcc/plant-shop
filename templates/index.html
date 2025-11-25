@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block header %}
+    {{ super() }}
+{% endblock %}
+{% block main %}
+
+    <h2>Welcome to your one-stop plant shop!</h2>
+    <h3>
+        Whether you need to buy or sell plants, we
+        got you covered!
+    </h3>
+
+    <p>Sign up with the Sign Up button or 
+        <a href="{{ url_for('signup') }}">here!</a>
+    </p>
+
+{% endblock %}
