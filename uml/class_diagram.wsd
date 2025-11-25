@@ -24,16 +24,15 @@ class Plant {
     - sellerId: integer
 }
 
-enum OrderStatus {
-    OPEN
-    PLACED
+enum CartStatus {
+    ACTIVE
+    INACTIVE
 }
 
 class Cart {
     - *id: integer
-    - orderDate: DateTime
-    - status: OrderStatus
     - customerId: integer
+    - cartStatus: CartStatus
 }
 
 class CartItem {
@@ -42,9 +41,29 @@ class CartItem {
     - quantity: integer
 }
 
+class Order {
+    - *id: integer
+    - orderDate: DateTime
+    - status: OrderStatus
+    - customerId: integer
+}
+
+class OrderItem {
+    - *id: integer
+    - price: double
+    - quantity: integer
+}
+
 User "1" *-- "0..*" Plant: sells
 User "1" o-- "0..*" Cart : has
+User "1" o-- "0..*" Order: orders
+
 Cart "1" *-- "0..*" CartItem : holds
 CartItem "1" --> "1" Plant : references
+
+Cart "1" --> "1" Order: can become
+
+Order "1" *-- "1..*" OrderItem: contains
+OrderItem "1" --> "1" Plant: references
 
 @enduml

@@ -2,7 +2,7 @@
 
 The Unbeleafable Plant Shop is an online marketplace that connects horticulturists with customers who want to buy plants. Sellers can create listings, manage inventory, and track sales, while customers can browse plants, filter by category, make purchases, and view past orders. The system provides a simple, convenient interface for both buyers and growers, targeting local plant sellers and customers looking to build or expand their gardens.
 
-![Unbeleafable Use Case Diagram](uml/use_case.png "Unbeleafable Use Case Diagram")
+![Unbeleafable Use Case Diagram](uml/case_diagram.png "Unbeleafable Use Case Diagram")
 
 # Design
 
@@ -20,7 +20,7 @@ As a new user of the system, I want to register for the plant store platform by 
 
 #### Allotted Story Points: 2
 
-As a logged-in horticulturist, I want to view all of the plants I have for sale and the plants my competitors have for sale so that I can evaluate the market, update my plant listings, and sell the plants I have grown all in one interface. Given that I am logged in, when the plant dashboard loads, then I can see all of the plants available for sale organized in a convenient format.
+As a logged-in horticulturist, I want to view all of the plants I have for sale and the plants my competitors have for sale so that I can evaluate the market, update my plant listings, and sell plants I have grown at a competitive price all in one interface. Given that I am logged in, when the plant dashboard loads, then I can see all of the plants available for sale organized in a convenient format.
 
 ### User Story #3: New Plants for Sale
 
@@ -38,7 +38,7 @@ As a customer, I want to view all the plants for sale at the same time or by a s
 
 #### Allotted Story Points: 13
 
-As a customer, I want to add plants to my cart so that I can purchase them. Given that I am logged-in, the plant being selected is for sale, the plant has been added to my cart, and I am in my cart, when the button "Order Now" has been clicked, then I have purchased the plants and the system records the purchase.
+As a customer, I want to add plants to my cart and purchase them so I can start my garden. Given that I am logged-in, the plant being selected is in stock, the plant has been added to my cart, and I am in my cart, when the button "Order Now" has been clicked, then I have purchased the plants and the system records the purchase.
 
 ### User Story #6: View Plant Invoice
 
@@ -58,16 +58,15 @@ Include a **class diagram** that clearly describes the **model classes** used in
 
 ![Class Model Diagram](uml/class_diagram.png "Class Model Diagram")
 
-
 # Development Process
 
 This section should describe, in general terms, how Scrum was applied in the project. Include a table summarizing the division of the project into sprints, the **user story** goals planned for each sprint, the ones actually completed, and the start and end dates of each sprint. You may also add any relevant observations or reflections about the sprints as you see fit.
 
-| Sprint# | Goals            | Start    | End      | Done | Observations                                                                                                                                                     |
-| ------- | ---------------- | -------- | -------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1       | US#1, US#2, US#3 | 11/19/25 | 11/25/25 |      | It was tedious for the group<br />to plan the whole project, <br />refine all the user stories,<br />and build the project<br />files from the ground<br />up. |
-| 2       |                  |          |          |      |                                                                                                                                                                  |
-| 3       |                  |          |          |      |                                                                                                                                                                  |
+| Sprint# | Goals            | Start    | End      | Done             | Observations                                                                                                                                                     |
+| ------- | ---------------- | -------- | -------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | US#1, US#2, US#3 | 11/19/25 | 11/25/25 | US#1, US#2, US#3 | It was tedious for the group<br />to plan the whole project, <br />refine all the user stories,<br />and build the project<br />files from the ground<br />up. |
+| 2       |                  |          |          |                  |                                                                                                                                                                  |
+| 3       |                  |          |          |                  |                                                                                                                                                                  |
 
 As in Project 2, you should take notes on the major Scrum meetings: planning, daily scrums, review, and retrospective. These meetings are essential for tracking progress, identifying obstacles, and ensuring continuous improvement. Use the Scrum folder and the shared templates to record your notes in an organized and consistent manner.
 
@@ -85,14 +84,14 @@ In this section, share the results of the tests performed to verify the quality 
 
 ### Manual Testing Results
 
-| User Story | Feature/Function | Date | Time | Result |
-| ---------- | ---------------- | ---- | ---- | ------ |
-|            |                  |      |      |        |
-|            |                  |      |      |        |
-|            |                  |      |      |        |
-|            |                  |      |      |        |
-|            |                  |      |      |        |
-|            |                  |      |      |        |
-|            |                  |      |      |        |
-|            |                  |      |      |        |
-|            |                  |      |      |        |
+| User Story | Feature/Function                   | Test Format   | Date     | Time  | Result |
+| ---------- | ---------------------------------- | ------------- | -------- | ----- | ------ |
+| 1          | User Registration (Horticulturist) | Manual/Docker | 11/24/25 | 19:20 | Passed |
+| 1          | User Registration (Customer)       | Manual/Docker | 11/24/25 | 19:25 | Passed |
+| 2          | View Plant Inventory               | Manual/Docker | 11/24/25 | 19:22 | Passed |
+| 3          | Create Plant/New Plants for Sale   | Manual/Docker | 11/24/25 | 19:23 | Passed |
+|            |                                    |               |          |       |        |
+|            |                                    |               |          |       |        |
+|            |                                    |               |          |       |        |
+|            |                                    |               |          |       |        |
+|            |                                    |               |          |       |        |
