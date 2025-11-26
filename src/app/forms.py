@@ -51,3 +51,19 @@ class PlantForm(FlaskForm):
     quantity = IntegerField('Quantity', validators=[DataRequired()])
     price = DecimalField('Price', places=2, validators=[DataRequired()])
     submit = SubmitField('List')
+
+
+class CategoryViewForm(FlaskForm):
+    variety = SelectField(
+        'Select Plant Variety',
+        choices=['all', 'tree', 'flower', 'shrub', 'herb'],
+        validators=[DataRequired()]
+    )
+
+    climate = SelectField(
+        'Select Climate Type',
+        choices=['all', 'arid', 'cold', 'temperate', 'tropical'],
+        validators=[DataRequired()]
+    )
+
+    submit = SubmitField('Browse')

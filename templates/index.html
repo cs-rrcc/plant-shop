@@ -10,8 +10,10 @@
         got you covered!
     </h3>
 
-    <p>Sign up with the Sign Up button or 
-        <a href="{{ url_for('signup') }}">here!</a>
-    </p>
+    {% if not current_user.is_authenticated %}
+        <p>Sign up with the Sign Up button or 
+            <a href="{{ url_for('signup') }}">here!</a>
+        </p>
+    {% endif %}
 
 {% endblock %}

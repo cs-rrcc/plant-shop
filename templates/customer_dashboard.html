@@ -3,4 +3,52 @@
     {{ super() }}
 {% endblock %}
 {% block main %}
+    <h2>Plants for Sale</h2>
+    <form method="post" action="" novalidate>
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.variety.label}}
+            {{ form.variety() }}
+        </div>
+
+        <div>
+            {{ form.climate.label }}
+            {{ form.climate() }}
+        </div>
+
+        <div>
+            {{ form.submit }}
+        </div>
+
+    </form>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Variety</th>
+            <th>Climate</th>
+            <th>Quantity</th>
+            <th colspan="2">Price</th>
+        </tr>
+
+    {% if listings %}
+        {% for listing in listings %}
+            <tr>
+                <td> {{listing.name}} </td>
+                <td> {{listing.color}} </td>
+                <td> {{listing.variety}} </td>
+                <td> {{listing.climate}} </td>
+                <td> {{listing.quantity}} </td>
+                <td> {{listing.price}} </td>
+                <td> Add to cart button </td>
+            </tr>
+        {% endfor %}    
+    {% else %}
+            <tr>
+                <td>No plants have been listed yet, check back later!</td>
+            </tr>
+    {% endif %}
+    </table>
+
 {% endblock %}

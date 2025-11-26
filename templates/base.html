@@ -17,10 +17,12 @@
         
         {% if current_user.is_authenticated %}
             {% if current_user.role == 'horticulturist' %}
-                <a href="{{ url_for('seller_dashboard') }}">Seller Dashboard</a>
+                <a href="{{ url_for('seller_dashboard') }}">My Dashboard</a>
                 <a href="{{ url_for('create_plant') }}">Create Plant</a>
             {% else %}
-                <a href="{{ url_for('customer_dashboard') }}">Customer Dashboard</a>
+                <a href="{{ url_for('customer_dashboard') }}">Plant Listings</a>
+                <a href="">My Cart</a>
+                <a href="">My Orders</a>
             {% endif %}
             <a href="{{ url_for('logout') }}">Logout</a>
         {% else %}
