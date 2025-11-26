@@ -11,7 +11,7 @@ import bcrypt
 
 from app import app, db
 from app.auth import role_required
-from app.forms import LoginForm, PlantForm, SignUpForm
+from app.forms import CategoryViewForm, LoginForm, PlantForm, SignUpForm
 from app.models import Plant, User
 
 
@@ -82,7 +82,7 @@ def logout():
 
 
 def get_all_plant_listings():
-    return Plant.query.all()
+    return Plant.query.filter(Plant.quantity > 0).all()
 
 
 def get_plants_by_seller(id):
@@ -93,18 +93,47 @@ def get_plants_by_seller(id):
     )
 
 
-def get_plants_by_category(category):
-    pass
+def get_plants_by_category(variety, climate):
+    plant_list_query = Plant.query.filter(Plant.quantity > 0)
+
+    if variety != 'all':
+        plant_list_query = plant_list_query.filter(
+            Plant.variety == variety
+        )
+
+    if climate != 'all':
+        plant_list_query = plant_list_query.filter(
+            Plant.climate == climate
+        )
+
+    return plant_list_query.all()
 
 
-@app.route('/buydashboard', methods=['GET', 'POST'])
+@app.route('/buyplants', methods=['GET', 'POST'])
 @login_required
 @role_required('customer')
 def customer_dashboard():
-    return render_template('customer_dashboard.html')
+    form = CategoryViewForm()
+    listings = get_all_plant_listings()
+
+    if form.validate_on_submit():
+        try:
+            listings = get_plants_by_category(
+                form.variety.data,
+                form.climate.data
+            )
+        except Exception as e:
+            print(e)
+            return redirect(url_for('error_page'))
+
+    return render_template(
+        'customer_dashboard.html',
+        listings=listings,
+        form=form
+    )
 
 
-@app.route('/listdashboard', methods=['GET', 'POST'])
+@app.route('/mydashboard', methods=['GET', 'POST'])
 @login_required
 @role_required('horticulturist')
 def seller_dashboard():

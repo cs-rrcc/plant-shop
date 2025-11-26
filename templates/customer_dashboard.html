@@ -46,7 +46,13 @@
         {% endfor %}    
     {% else %}
             <tr>
-                <td>No plants have been listed yet, check back later!</td>
+                <td>
+                    {% if form.validate_on_submit %}
+                        No plants fall under these categories.
+                    {% else %}
+                        No plants have been listed yet, check back later!
+                    {% endif %}
+                </td>
             </tr>
     {% endif %}
     </table>

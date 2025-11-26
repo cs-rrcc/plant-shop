@@ -5,7 +5,7 @@ Description:
 
 from flask_wtf import FlaskForm
 from wtforms import *
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import InputRequired, DataRequired, NumberRange, Email
 
 
 class SignUpForm(FlaskForm):
@@ -48,7 +48,10 @@ class PlantForm(FlaskForm):
         validators=[DataRequired()]
     )
 
-    quantity = IntegerField('Quantity', validators=[DataRequired()])
+    quantity = IntegerField(
+        'Quantity',
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
     price = DecimalField('Price', places=2, validators=[DataRequired()])
     submit = SubmitField('List')
 
