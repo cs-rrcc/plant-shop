@@ -37,7 +37,6 @@ class Cart {
 
 class CartItem {
     - *id: integer
-    - price: double
     - quantity: integer
 }
 
@@ -55,7 +54,7 @@ class OrderItem {
 }
 
 User "1" *-- "0..*" Plant: sells
-User "1" o-- "0..*" Cart : has
+User "1" o-- "0..1" Cart : has
 User "1" o-- "0..*" Order: orders
 
 Cart "1" *-- "0..*" CartItem : holds
