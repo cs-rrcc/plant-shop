@@ -21,7 +21,7 @@
                 <a href="{{ url_for('create_plant') }}">Create Plant</a>
             {% else %}
                 <a href="{{ url_for('customer_dashboard') }}">Plant Listings</a>
-                <a href="">My Cart</a>
+                <a href="{{ url_for('view_cart') }}">My Cart</a>
                 <a href="">My Orders</a>
             {% endif %}
             <a href="{{ url_for('logout') }}">Logout</a>
