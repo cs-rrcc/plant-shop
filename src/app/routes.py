@@ -4,7 +4,7 @@ Description:
 """
 
 
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
 
 import bcrypt
@@ -12,7 +12,7 @@ import bcrypt
 from app import app, db
 from app.auth import role_required
 from app.forms import CategoryViewForm, LoginForm, PlantForm, SignUpForm
-from app.models import Plant, User
+from app.models import Plant, User, Cart, CartItem
 
 
 @app.route('/')
@@ -89,6 +89,7 @@ def get_plants_by_seller(id):
     return (
         Plant.query.filter_by(seller_id=id)
         .order_by(Plant.quantity.asc())
+        .filter(Plant.quantity > 0)
         .all()
     )
 
@@ -107,6 +108,23 @@ def get_plants_by_category(variety, climate):
         )
 
     return plant_list_query.all()
+
+def check_plant_quantity(plant_id: int, requested_qty: int):
+    """
+    Check if a plant exists and if the requested quantity is valid.
+    """
+    plant = Plant.query.get(plant_id)
+
+    if plant is None:
+        return None, False, "Plant not found."
+
+    if requested_qty <= 0:
+        return plant, False, "Quantity must be at least 1."
+
+    if plant.quantity < requested_qty:
+        return plant, False, f"Only {plant.quantity} left in stock."
+
+    return plant, True, ""
 
 
 @app.route('/buyplants', methods=['GET', 'POST'])
@@ -132,6 +150,68 @@ def customer_dashboard():
         form=form
     )
 
+@app.route('/cart/add', methods=['POST'])
+@login_required
+@role_required('customer')
+def add_to_cart():
+    # Parse input
+    try:
+        plant_id = int(request.form.get("plant_id"))
+        quantity = int(request.form.get("quantity", 1))
+    except (TypeError, ValueError):
+        flash("Invalid quantity selected.", "Error")
+        return redirect(url_for("customer_dashboard"))
+
+    # Validate against stock
+    plant, ok, message = check_plant_quantity(plant_id, quantity)
+    if not ok:
+        flash(message, "Error")
+        return redirect(url_for("customer_dashboard"))
+
+    # Get or create the user's cart
+    cart = current_user.cart
+    if cart is None:
+        cart = Cart(customer=current_user, status="ACTIVE")
+        db.session.add(cart)
+        db.session.flush()  # ensure cart.id exists
+
+    # See if this plant is already in the cart
+    cart_item = CartItem.query.filter_by(
+        cart_id=cart.id,
+        plant_id=plant.id
+    ).first()
+
+    if cart_item:
+        new_qty = cart_item.quantity + quantity
+
+        # Make sure the total in cart does not exceed stock
+        if new_qty > plant.quantity:
+            remaining = plant.quantity - cart_item.quantity
+            if remaining <= 0:
+                flash(
+                    "You already have the maximum available quantity of this plant in your cart.",
+                    "Error"
+                )
+            else:
+                flash(
+                    f"You can only add {remaining} more of this plant.",
+                    "Error"
+                )
+            return redirect(url_for("customer_dashboard"))
+
+        cart_item.quantity = new_qty
+    else:
+        cart_item = CartItem(
+            cart=cart,
+            plant=plant,
+            quantity=quantity
+        )
+        db.session.add(cart_item)
+
+    db.session.commit()
+    flash(f"Added {quantity} × {plant.name} to your cart.", "Success")
+    return redirect(url_for("customer_dashboard"))
+
 
 @app.route('/mydashboard', methods=['GET', 'POST'])
 @login_required
@@ -144,6 +224,7 @@ def seller_dashboard():
         seller_listings=seller_listings,
         all_listings=all_listings
     )
+
 
 
 # Create a new plant listing for the logged-in horticulturist.
