@@ -283,6 +283,63 @@ def update_plant(plant_id):
     return render_template('update_plant.html', plant=plant, form=form,)
 
 
+# Display the customer's cart and handle checkout when the button is pressed.
+@app.route('/cart', methods=['GET', 'POST'])
+@login_required
+@role_required('customer')
+def view_cart():
+
+    cart = current_user.cart
+
+    if request.method == 'POST':
+
+        if cart is None or not cart.cart_items:
+            flash("Your cart is empty.", "Error")
+            return redirect(url_for('view_cart'))
+
+        try:
+            for item in cart.cart_items:
+                if item.plant.quantity < item.quantity:
+                    flash(
+                        f"Not enough stock left for {item.plant.name}.",
+                        "Error"
+                    )
+                    return redirect(url_for('view_cart'))
+
+                item.plant.quantity -= item.quantity
+
+            for item in cart.cart_items:
+                db.session.delete(item)
+
+            cart.status = "PLACED"
+
+            db.session.commit()
+
+            flash("Order successful!", "Success")
+            return redirect(url_for('customer_dashboard'))
+
+        except Exception:
+            db.session.rollback()
+            flash("Error processing your order.", "Error")
+            return redirect(url_for('error_page'))
+
+    if cart is None or not cart.cart_items:
+        return render_template(
+            'view_cart.html',
+            cart_items=[],
+            total=0
+        )
+
+    cart_items = cart.cart_items
+    total = sum(float(item.plant.price) * item.quantity for item in cart_items)
+
+    return render_template(
+        'view_cart.html',
+        cart_items=cart_items,
+        total=round(total, 2)
+    )
+
+
 @app.route('/error', methods=['GET'])
 def error_page():
     return render_template('error.html')
