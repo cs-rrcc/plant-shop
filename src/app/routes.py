@@ -85,16 +85,16 @@ def get_all_plant_listings():
     return Plant.query.filter(Plant.quantity > 0).all()
 
 
-def get_plants_by_seller(id):
+def get_plants_by_seller(seller_id: int):
     return (
-        Plant.query.filter_by(seller_id=id)
+        Plant.query.filter_by(seller_id=seller_id)
         .order_by(Plant.quantity.asc())
         .filter(Plant.quantity > 0)
         .all()
     )
 
 
-def get_plants_by_category(variety, climate):
+def get_plants_by_category(variety: str, climate: str):
     plant_list_query = Plant.query.filter(Plant.quantity > 0)
 
     if variety != 'all':
@@ -108,6 +108,47 @@ def get_plants_by_category(variety, climate):
         )
 
     return plant_list_query.all()
+
+
+@app.route('/buyplants', methods=['GET', 'POST'])
+@login_required
+@role_required('customer')
+def customer_dashboard():
+    form = CategoryViewForm()
+    listings = get_all_plant_listings()
+
+    if form.validate_on_submit():
+        try:
+            listings = get_plants_by_category(
+                form.variety.data,
+                form.climate.data
+            )
+        except Exception:
+            return redirect(url_for('error_page'))
+
+    return render_template(
+        'customer_dashboard.html',
+        listings=listings,
+        form=form
+    )
+
+
+def get_or_create_cart(user):
+    cart = Cart.query.filter_by(
+        customer_id=user.id,
+        status="ACTIVE"
+    ).first()
+
+    if cart is None:
+        cart = Cart(
+            customer=user,
+            status="ACTIVE"
+        )
+        db.session.add(cart)
+        db.session.flush()  # ensure cart.id exists
+
+    return cart
+
 
 def check_plant_quantity(plant_id: int, requested_qty: int):
     """
@@ -127,28 +168,42 @@ def check_plant_quantity(plant_id: int, requested_qty: int):
     return plant, True, ""
 
 
-@app.route('/buyplants', methods=['GET', 'POST'])
-@login_required
-@role_required('customer')
-def customer_dashboard():
-    form = CategoryViewForm()
-    listings = get_all_plant_listings()
+def add_or_manage_cart_item(cart, plant_id: int, quantity: int):
+    plant = Plant.query.filter_by(id=plant_id).first()
+    cart_item = CartItem.query.filter_by(
+        cart_id=cart.id,
+        plant_id=plant.id
+    ).first()
 
-    if form.validate_on_submit():
-        try:
-            listings = get_plants_by_category(
-                form.variety.data,
-                form.climate.data
-            )
-        except Exception as e:
-            print(e)
-            return redirect(url_for('error_page'))
+    # See if this plant is already in the cart
+    if cart_item:
+        new_quantity = cart_item.quantity + quantity
 
-    return render_template(
-        'customer_dashboard.html',
-        listings=listings,
-        form=form
-    )
+        # Make sure the total in cart does not exceed stock
+        if new_quantity > plant.quantity:
+            remaining = plant.quantity - cart_item.quantity
+            if remaining <= 0:
+                return (
+                    False,
+                    "You already have the maximum available quantity of "
+                    "this plant in your cart."
+                )
+            else:
+                return (
+                    False,
+                    f"You can only add {remaining} more of this plant."
+                )
+
+        cart_item.quantity = new_quantity
+    else:
+        cart_item = CartItem(
+            cart=cart,
+            plant=plant,
+            quantity=quantity
+        )
+        db.session.add(cart_item)
+    return True, None
+
 
 @app.route('/cart/add', methods=['POST'])
 @login_required
@@ -169,48 +224,95 @@ def add_to_cart():
         return redirect(url_for("customer_dashboard"))
 
     # Get or create the user's cart
-    cart = current_user.cart
-    if cart is None:
-        cart = Cart(customer=current_user, status="ACTIVE")
-        db.session.add(cart)
-        db.session.flush()  # ensure cart.id exists
+    cart = get_or_create_cart(current_user)
 
-    # See if this plant is already in the cart
-    cart_item = CartItem.query.filter_by(
-        cart_id=cart.id,
-        plant_id=plant.id
-    ).first()
-
-    if cart_item:
-        new_qty = cart_item.quantity + quantity
-
-        # Make sure the total in cart does not exceed stock
-        if new_qty > plant.quantity:
-            remaining = plant.quantity - cart_item.quantity
-            if remaining <= 0:
-                flash(
-                    "You already have the maximum available quantity of this plant in your cart.",
-                    "Error"
-                )
-            else:
-                flash(
-                    f"You can only add {remaining} more of this plant.",
-                    "Error"
-                )
-            return redirect(url_for("customer_dashboard"))
-
-        cart_item.quantity = new_qty
-    else:
-        cart_item = CartItem(
-            cart=cart,
-            plant=plant,
-            quantity=quantity
-        )
-        db.session.add(cart_item)
+    # Add to cart or update the quantity of an item in the cart
+    ok, message = add_or_manage_cart_item(cart, plant_id, quantity)
+    if not ok:
+        flash(message, "Error")
+        return redirect(url_for("customer_dashboard"))
 
     db.session.commit()
     flash(f"Added {quantity} × {plant.name} to your cart.", "Success")
     return redirect(url_for("customer_dashboard"))
+
+
+def validate_cart_items_in_cart(cart):
+    for item in cart.cart_items:
+        if item.plant.quantity < item.quantity:
+            return (
+                False,
+                f"Not enough stock left for {item.plant.name}. "
+                f"Removing {item.plant.name} to its stock amount"
+            )
+    return True, None
+
+
+# Updates the plant inventory and removes the cart items at checkout.
+def apply_cart_at_checkout(cart):
+    for item in cart.cart_items:
+        item.plant.quantity -= item.quantity
+
+    for item in cart.cart_items:
+        db.session.delete(item)
+
+    cart.status = "INACTIVE"
+
+
+def fix_item_quantity_at_checkout(cart):
+    for item in cart.cart_items:
+        if item.quantity > item.plant.quantity:
+            item.quantity = item.plant.quantity
+
+
+# Display the customer's cart and handle checkout when the button is pressed.
+@app.route('/cart', methods=['GET', 'POST'])
+@login_required
+@role_required('customer')
+def view_cart():
+
+    cart = current_user.cart
+
+    if request.method == 'POST':
+
+        if cart is None or not cart.cart_items:
+            flash("Your cart is empty.", "Error")
+            return redirect(url_for('view_cart'))
+
+        ok, message = validate_cart_items_in_cart(cart)
+        if not ok:
+            flash(message, "Error")
+            fix_item_quantity_at_checkout(cart)
+            db.session.commit()
+            return redirect(url_for('view_cart'))
+
+        try:
+            apply_cart_at_checkout(cart)
+            db.session.commit()
+            flash("Order successful!", "Success")
+            return redirect(url_for('customer_dashboard'))
+
+        except Exception:
+            db.session.rollback()
+            flash("Error processing your order.", "Error")
+            return redirect(url_for('error_page'))
+
+    if cart is None or not cart.cart_items:
+        return render_template(
+            'view_cart.html',
+            cart_items=[],
+            total=0
+        )
+
+    cart_items = cart.cart_items
+    total = sum(float(item.plant.price) * item.quantity for item in cart_items)
+    total_formatted = (f"{total:.2f}")
+
+    return render_template(
+        'view_cart.html',
+        cart_items=cart_items,
+        total=total_formatted
+    )
 
 
 @app.route('/mydashboard', methods=['GET', 'POST'])
@@ -224,7 +326,6 @@ def seller_dashboard():
         seller_listings=seller_listings,
         all_listings=all_listings
     )
-
 
 
 # Create a new plant listing for the logged-in horticulturist.
@@ -281,63 +382,6 @@ def update_plant(plant_id):
             db.session.rollback()
             return redirect(url_for('error_page'))
     return render_template('update_plant.html', plant=plant, form=form,)
-
-
-# Display the customer's cart and handle checkout when the button is pressed.
-@app.route('/cart', methods=['GET', 'POST'])
-@login_required
-@role_required('customer')
-def view_cart():
-
-    cart = current_user.cart
-
-    if request.method == 'POST':
-
-        if cart is None or not cart.cart_items:
-            flash("Your cart is empty.", "Error")
-            return redirect(url_for('view_cart'))
-
-        try:
-            for item in cart.cart_items:
-                if item.plant.quantity < item.quantity:
-                    flash(
-                        f"Not enough stock left for {item.plant.name}.",
-                        "Error"
-                    )
-                    return redirect(url_for('view_cart'))
-
-                item.plant.quantity -= item.quantity
-
-            for item in cart.cart_items:
-                db.session.delete(item)
-
-            cart.status = "PLACED"
-
-            db.session.commit()
-
-            flash("Order successful!", "Success")
-            return redirect(url_for('customer_dashboard'))
-
-        except Exception:
-            db.session.rollback()
-            flash("Error processing your order.", "Error")
-            return redirect(url_for('error_page'))
-
-    if cart is None or not cart.cart_items:
-        return render_template(
-            'view_cart.html',
-            cart_items=[],
-            total=0
-        )
-
-    cart_items = cart.cart_items
-    total = sum(float(item.plant.price) * item.quantity for item in cart_items)
-
-    return render_template(
-        'view_cart.html',
-        cart_items=cart_items,
-        total=round(total, 2)
-    )
 
 
 @app.route('/error', methods=['GET'])
