@@ -4,8 +4,15 @@ Description:
 """
 
 from flask_login import UserMixin
-from sqlalchemy.orm import validates
+from enum import Enum as py_enum
+from sqlalchemy import Enum as SQL_enum
+from sqlalchemy.orm import Mapped, mapped_column, validates
 from app import db
+
+
+class UserRole(py_enum):
+    HORTICULTURIST = "horticulturist"
+    CUSTOMER = "customer"
 
 
 class User(UserMixin, db.Model):
@@ -15,7 +22,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.LargeBinary, nullable=False)
-    role = db.Column(db.String(15), nullable=False)
+    role = db.Column(db.Enum(UserRole), nullable=False)
 
     plants_for_sale = db.relationship(
         'Plant',
@@ -79,11 +86,22 @@ class Plant(db.Model):
         return f'<Plant {self.name}>'
 
 
+class CartStatus(py_enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+
+
 class Cart(db.Model):
     __tablename__ = 'carts'
 
     id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(15), nullable=False, default='ACTIVE')
+
+    status = db.Column(
+        db.Enum(CartStatus),
+        nullable=False,
+        default=CartStatus.ACTIVE
+    )
+
     customer_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id'),

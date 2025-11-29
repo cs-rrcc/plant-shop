@@ -1,18 +1,18 @@
 """
-Author(s):
+Author(s): Andrew, Kobe, and Mckenna
 Description:
 """
 
 
 from flask import flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
-
+from sqlalchemy.exc import SQLAlchemyError as SQL_Execution_Error
 import bcrypt
 
 from app import app, db
 from app.auth import role_required
 from app.forms import CategoryViewForm, LoginForm, PlantForm, SignUpForm
-from app.models import Plant, User, Cart, CartItem
+from app.models import Cart, CartItem, CartStatus, Plant, User, UserRole
 
 
 @app.route('/')
@@ -36,7 +36,7 @@ def signup():
                 password=bcrypt.hashpw(
                     form.password.data.encode("utf-8"),
                     bcrypt.gensalt()),
-                role=form.role.data
+                role=UserRole(form.role.data)
                 )
 
             db.session.add(user)
@@ -45,7 +45,7 @@ def signup():
             flash("Account created", "Success")
             return redirect(url_for('login'))
 
-        except Exception:
+        except (ValueError, SQL_Execution_Error):
             db.session.rollback()
             flash("Something Went Wrong Creating Your Account", "Error")
             return redirect(url_for('error_page'))
@@ -64,7 +64,7 @@ def login():
         ):
             login_user(user)
 
-            if user.role == 'horticulturist':
+            if user.role.value == 'horticulturist':
                 return redirect(url_for('seller_dashboard'))
             return redirect(url_for('customer_dashboard'))
         else:
@@ -123,7 +123,7 @@ def customer_dashboard():
                 form.variety.data,
                 form.climate.data
             )
-        except Exception:
+        except (SQL_Execution_Error):
             return redirect(url_for('error_page'))
 
     return render_template(
@@ -136,13 +136,13 @@ def customer_dashboard():
 def get_or_create_cart(user):
     cart = Cart.query.filter_by(
         customer_id=user.id,
-        status="ACTIVE"
+        status=CartStatus.ACTIVE
     ).first()
 
     if cart is None:
         cart = Cart(
             customer=user,
-            status="ACTIVE"
+            status=CartStatus.ACTIVE
         )
         db.session.add(cart)
         db.session.flush()  # ensure cart.id exists
@@ -256,7 +256,7 @@ def apply_cart_at_checkout(cart):
     for item in cart.cart_items:
         db.session.delete(item)
 
-    cart.status = "INACTIVE"
+    cart.status = CartStatus.INACTIVE
 
 
 def fix_item_quantity_at_checkout(cart):
@@ -349,13 +349,13 @@ def create_plant():
             db.session.add(plant)
             db.session.commit()
 
-            flash("Plant Listing Created", "Success")
+            flash("Plant listing created.", "Success")
             return redirect(url_for('seller_dashboard'))
 
         except Exception:
             db.session.rollback()
 
-            flash("Error Creating Plant Listing", "Error")
+            flash("Error creating plant listing.", "Error")
             return redirect(url_for('error_page'))
 
     return render_template('create_plant.html', form=form)
@@ -376,6 +376,7 @@ def update_plant(plant_id):
             form.populate_obj(plant)
             db.session.commit()
 
+            flash('Plant listing updated successfully.', 'Success')
             return redirect(url_for('seller_dashboard'))
 
         except Exception:
