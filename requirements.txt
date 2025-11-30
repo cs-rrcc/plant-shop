@@ -5,6 +5,7 @@ flask-sqlalchemy
 flask-login
 bcrypt
 email-validator
+pytz
 pytest
 selenium
 webdriver-manager

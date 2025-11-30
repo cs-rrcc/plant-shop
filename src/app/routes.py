@@ -7,12 +7,23 @@ Description:
 from flask import flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
 from sqlalchemy.exc import SQLAlchemyError as SQL_Execution_Error
+from datetime import datetime
+import pytz
 import bcrypt
 
 from app import app, db
 from app.auth import role_required
 from app.forms import CategoryViewForm, LoginForm, PlantForm, SignUpForm
-from app.models import Cart, CartItem, CartStatus, Plant, User, UserRole
+from app.models import (
+    Cart,
+    CartItem,
+    CartStatus,
+    Order,
+    OrderItem,
+    Plant,
+    User,
+    UserRole
+)
 
 
 @app.route('/')
@@ -248,18 +259,7 @@ def validate_cart_items_in_cart(cart):
     return True, None
 
 
-# Updates the plant inventory and removes the cart items at checkout.
-def apply_cart_at_checkout(cart):
-    for item in cart.cart_items:
-        item.plant.quantity -= item.quantity
-
-    for item in cart.cart_items:
-        db.session.delete(item)
-
-    cart.status = CartStatus.INACTIVE
-
-
-def fix_item_quantity_at_checkout(cart):
+def fix_item_quantity_before_checkout(cart):
     for item in cart.cart_items:
         if item.quantity > item.plant.quantity:
             item.quantity = item.plant.quantity
@@ -282,20 +282,9 @@ def view_cart():
         ok, message = validate_cart_items_in_cart(cart)
         if not ok:
             flash(message, "Error")
-            fix_item_quantity_at_checkout(cart)
+            fix_item_quantity_before_checkout(cart)
             db.session.commit()
             return redirect(url_for('view_cart'))
-
-        try:
-            apply_cart_at_checkout(cart)
-            db.session.commit()
-            flash("Order successful!", "Success")
-            return redirect(url_for('customer_dashboard'))
-
-        except Exception:
-            db.session.rollback()
-            flash("Error processing your order.", "Error")
-            return redirect(url_for('error_page'))
 
     if cart is None or not cart.cart_items:
         return render_template(
@@ -313,6 +302,71 @@ def view_cart():
         cart_items=cart_items,
         total=total_formatted
     )
+
+
+# Updates the plant inventory and removes the cart items at checkout.
+def apply_cart_at_checkout(cart):
+    for item in cart.cart_items:
+        item.plant.quantity -= item.quantity
+
+    for item in cart.cart_items:
+        db.session.delete(item)
+
+    cart.status = CartStatus.INACTIVE
+
+
+def create_order_obj(cart):
+    cart_items = cart.cart_items
+
+    order = Order(
+        order_date=datetime.now(pytz.timezone('America/Denver')),
+        order_total_item_amount=(
+            sum(item.quantity for item in cart_items)
+        ),
+        order_cost=(
+            sum(item.quantity * item.plant.price for item in cart_items)
+        ),
+        customer_id=current_user.id
+    )
+
+    db.session.add(order)
+    db.session.flush()
+
+    return order
+
+
+def create_order_items_obj(order, cart):
+    cart_items = cart.cart_items
+
+    for cart_item in cart_items:
+        order_item = OrderItem(
+            quantity=cart_item.quantity,
+            order=order,
+            plant=cart_item.plant
+        )
+        db.session.add(order_item)
+
+
+@app.route('/cart/order', methods=['POST'])
+@login_required
+@role_required('customer')
+def order_submit():
+    cart = get_or_create_cart(current_user)
+    try:
+        order = create_order_obj(cart)
+        create_order_items_obj(order, cart)
+        apply_cart_at_checkout(cart)
+
+        db.session.commit()
+
+        flash("Order successful!", "Success")
+        return redirect(url_for('customer_dashboard'))
+
+    except SQL_Execution_Error:
+        db.session.rollback()
+
+        flash("Error processing your order.", "Error")
+        return redirect(url_for('error_page'))
 
 
 @app.route('/mydashboard', methods=['GET', 'POST'])
@@ -352,7 +406,7 @@ def create_plant():
             flash("Plant listing created.", "Success")
             return redirect(url_for('seller_dashboard'))
 
-        except Exception:
+        except SQL_Execution_Error:
             db.session.rollback()
 
             flash("Error creating plant listing.", "Error")
@@ -379,7 +433,7 @@ def update_plant(plant_id):
             flash('Plant listing updated successfully.', 'Success')
             return redirect(url_for('seller_dashboard'))
 
-        except Exception:
+        except SQL_Execution_Error:
             db.session.rollback()
             return redirect(url_for('error_page'))
     return render_template('update_plant.html', plant=plant, form=form,)
