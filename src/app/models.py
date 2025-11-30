@@ -39,6 +39,12 @@ class User(UserMixin, db.Model):
         lazy=True
     )
 
+    orders = db.relationship(
+        'Order',
+        back_populates='customer',
+        lazy=True
+    )
+
     def __repr__(self):
         return f'<User {self.email}>'
 
@@ -66,6 +72,12 @@ class Plant(db.Model):
 
     cart_items = db.relationship(
         'CartItem',
+        back_populates='plant',
+        lazy=True
+    )
+
+    order_items = db.relationship(
+        'OrderItem',
         back_populates='plant',
         lazy=True
     )
@@ -117,7 +129,7 @@ class Cart(db.Model):
         'CartItem',
         back_populates='cart',
         lazy=True,
-        cascade='all,delete-orphan'
+        cascade='all, delete-orphan'
     )
 
     def __repr__(self):
@@ -136,10 +148,69 @@ class CartItem(db.Model):
         nullable=False
     )
 
-    cart_id = db.Column(db.Integer, db.ForeignKey('carts.id'), nullable=False)
+    cart_id = db.Column(
+        db.Integer,
+        db.ForeignKey('carts.id'),
+        nullable=False
+    )
 
     plant = db.relationship('Plant', back_populates='cart_items')
     cart = db.relationship('Cart', back_populates='cart_items')
 
     def __repr__(self):
-        return f'<Cart_Item {self.id}>'
+        return f'<Cart Item {self.id}>'
+
+
+class Order(db.Model):
+    __tablename__ = 'orders'
+
+    id = db.Column(db.Integer, primary_key=True)
+    order_date = db.Column(db.DateTime, nullable=False)
+    order_total_item_amount = db.Column(db.Integer, nullable=False)
+    order_cost = db.Column(db.Numeric(15, 2), nullable=False, default=0.00)
+
+    customer_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        nullable=False
+    )
+
+    customer = db.relationship(
+        'User',
+        back_populates='orders'
+    )
+
+    order_items = db.relationship(
+        'OrderItem',
+        back_populates='order',
+        lazy=True,
+        cascade='all, delete-orphan'
+    )
+
+    def __repr__(self):
+        return f'<Order {self.id}>'
+
+
+class OrderItem(db.Model):
+    __tablename__ = 'order_items'
+
+    id = db.Column(db.Integer, primary_key=True)
+    quantity = db.Column(db.Integer, nullable=False)
+
+    order_id = db.Column(
+        db.Integer,
+        db.ForeignKey('orders.id'),
+        nullable=False
+    )
+
+    plant_id = db.Column(
+        db.Integer,
+        db.ForeignKey('plants.id'),
+        nullable=False
+    )
+
+    order = db.relationship('Order', back_populates='order_items')
+    plant = db.relationship('Plant', back_populates='order_items')
+
+    def __repr__(self):
+        return f'<Order Item {self.id}>'
