@@ -266,42 +266,25 @@ def fix_item_quantity_before_checkout(cart):
 
 
 # Display the customer's cart and handle checkout when the button is pressed.
-@app.route('/cart', methods=['GET', 'POST'])
+@app.route('/cart', methods=['GET'])
 @login_required
 @role_required('customer')
 def view_cart():
 
-    cart = current_user.cart
+      cart = current_user.cart
 
-    if request.method == 'POST':
+      if cart is None or not cart.cart_items:
+          return render_template("view_cart.html", cart_items=[], total="0.00")
 
-        if cart is None or not cart.cart_items:
-            flash("Your cart is empty.", "Error")
-            return redirect(url_for('view_cart'))
+      cart_items = cart.cart_items
+      total = sum(float(item.plant.price) * item.quantity for item in cart_items)
 
-        ok, message = validate_cart_items_in_cart(cart)
-        if not ok:
-            flash(message, "Error")
-            fix_item_quantity_before_checkout(cart)
-            db.session.commit()
-            return redirect(url_for('view_cart'))
+      return render_template(
+          "view_cart.html",
+          cart_items=cart_items,
+          total=f"{total:.2f}"
 
-    if cart is None or not cart.cart_items:
-        return render_template(
-            'view_cart.html',
-            cart_items=[],
-            total=0
-        )
-
-    cart_items = cart.cart_items
-    total = sum(float(item.plant.price) * item.quantity for item in cart_items)
-    total_formatted = (f"{total:.2f}")
-
-    return render_template(
-        'view_cart.html',
-        cart_items=cart_items,
-        total=total_formatted
-    )
+      )
 
 
 # Updates the plant inventory and removes the cart items at checkout.
