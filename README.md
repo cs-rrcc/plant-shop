@@ -4,7 +4,15 @@ The Unbeleafable Plant Shop is an online marketplace that connects horticulturis
 
 ![Unbeleafable Use Case Diagram](uml/case_diagram.png "Unbeleafable Use Case Diagram")
 
+---
+
+
+
 # Design
+
+---
+
+
 
 ## User Stories
 
@@ -46,31 +54,43 @@ As a customer, I want to add plants to my cart and purchase them so I can start 
 
 As a customer, I want to view my previous plant orders so that I can keep track of what types of plants I have purchased. Given that I am logged in and have made a purchase, when I select the "view recent orders" page, then I can view a list of all my orders organized by order date.
 
+---
+
 ## Sequence Diagram
 
 ### User Story Five Sequence Diagram
 
 ![Sequence Diagram](uml/sequence_diagram.png "Sequence Diagram")
 
+---
+
+
+
 ## Class Model Diagram
 
 ![Class Model Diagram](uml/class_diagram.png "Class Model Diagram")
+
+---
 
 # Development Process
 
 This section should describe, in general terms, how Scrum was applied in the project. Include a table summarizing the division of the project into sprints, the **user story** goals planned for each sprint, the ones actually completed, and the start and end dates of each sprint. You may also add any relevant observations or reflections about the sprints as you see fit.
 
-| Sprint# | Goals            | Start    | End      | Done             | Observations                                                                                                                                                     |
-| ------- | ---------------- | -------- | -------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1       | US#1, US#2, US#3 | 11/19/25 | 11/25/25 | US#1, US#2, US#3 | It was tedious for the group<br />to plan the whole project, <br />refine all the user stories,<br />and build the project<br />files from the ground<br />up. |
-| 2       |                  |          |          |                  |                                                                                                                                                                  |
-| 3       |                  |          |          |                  |                                                                                                                                                                  |
+| Sprint# | Goals            | Start    | End      | Done             | Observations                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------- | ---------------- | -------- | -------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | US#1, US#2, US#3 | 11/19/25 | 11/25/25 | US#1, US#2, US#3 | It was tedious for the group<br />to plan the whole project, <br />refine all the user stories,<br />and build the project<br />files from the ground<br />up. Although everything was<br />completed in time, it was difficult<br />to focus on design and <br />implementation<br />at the same time.                                                                                                             |
+| 2       | US#4, US#5       | 11/25/25 | 12/2/25  | US#4, US#5       | User story four was relatively<br />simple to implement while user<br />story five took up most of this<br />sprint. Some design adjustments<br />were made to better align with<br />the implementation of the user<br />stories. This sprint was considered <br />difficult because implementing <br />user story five proved to be a complex<br />task and project work had to be<br />coordinated over a break. |
+| 3       |                  |          |          |                  |                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 As in Project 2, you should take notes on the major Scrum meetings: planning, daily scrums, review, and retrospective. These meetings are essential for tracking progress, identifying obstacles, and ensuring continuous improvement. Use the Scrum folder and the shared templates to record your notes in an organized and consistent manner.
 
 Embed an image of the burndown chart here.
 
 ![Scrum Burndown Chart](scrum/burndown_chart.png "Scrum Burndown Chart")
+
+---
+
+
 
 # Testing
 
@@ -79,6 +99,8 @@ In this section, share the results of the tests performed to verify the quality 
 ### Black Box Testing Results
 
 ### White Box Testing Results
+
+### Test Coverage Results
 
 ### Manual Testing Results
 
