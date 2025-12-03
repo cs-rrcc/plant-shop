@@ -121,6 +121,10 @@ form select {
     border: 1px solid #cbd5e0;
 }
 
+.input-secondary {
+    width: 50%;
+}
+
 form .errors {
     color: #c53030;
     font-size: 0.85rem;

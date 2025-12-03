@@ -100,7 +100,6 @@ def get_plants_by_seller(seller_id: int):
     return (
         Plant.query.filter_by(seller_id=seller_id)
         .order_by(Plant.quantity.asc())
-        .filter(Plant.quantity > 0)
         .all()
     )
 
@@ -216,7 +215,7 @@ def add_or_manage_cart_item(cart, plant_id: int, quantity: int):
     return True, None
 
 
-@app.route('/cart/add', methods=['POST'])
+@app.route('/mycart/add', methods=['POST'])
 @login_required
 @role_required('customer')
 def add_to_cart():
@@ -265,26 +264,24 @@ def fix_item_quantity_before_checkout(cart):
             item.quantity = item.plant.quantity
 
 
-# Display the customer's cart and handle checkout when the button is pressed.
-@app.route('/cart', methods=['GET'])
+@app.route('/mycart', methods=['GET'])
 @login_required
 @role_required('customer')
 def view_cart():
 
-      cart = current_user.cart
+    cart = current_user.cart
 
-      if cart is None or not cart.cart_items:
-          return render_template("view_cart.html", cart_items=[], total="0.00")
+    if cart is None or not cart.cart_items:
+        return render_template("view_cart.html", cart_items=[], total="0.00")
 
-      cart_items = cart.cart_items
-      total = sum(float(item.plant.price) * item.quantity for item in cart_items)
+    cart_items = cart.cart_items
+    total = sum(float(item.plant.price) * item.quantity for item in cart_items)
 
-      return render_template(
-          "view_cart.html",
-          cart_items=cart_items,
-          total=f"{total:.2f}"
-
-      )
+    return render_template(
+        "view_cart.html",
+        cart_items=cart_items,
+        total=f"{total:.2f}"
+    )
 
 
 # Updates the plant inventory and removes the cart items at checkout.
@@ -350,6 +347,37 @@ def order_submit():
 
         flash("Error processing your order.", "Error")
         return redirect(url_for('error_page'))
+
+
+def get_orders(customer_id: int):
+    return (
+        Order.query.filter_by(customer_id=customer_id)
+        .order_by(Order.order_date.asc())
+        .all()
+    )
+
+
+def get_order_items(order_id: int):
+    return (
+        OrderItem.query.filter_by(order_id=order_id)
+        .order_by(OrderItem.quantity.asc())
+        .all()
+    )
+
+
+@app.route('/myorders', methods=['GET'])
+@login_required
+@role_required('customer')
+def view_orders():
+    orders = get_orders(current_user.id)
+    return render_template('view_orders.html', orders=orders)
+
+
+@app.route('/myorders/<int:order_id>/invoice', methods=['GET'])
+@login_required
+@role_required('customer')
+def view_items_in_order():
+    return None
 
 
 @app.route('/mydashboard', methods=['GET', 'POST'])
