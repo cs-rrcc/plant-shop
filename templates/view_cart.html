@@ -1,0 +1,41 @@
+﻿{% extends 'base.html' %}
+
+{% block main %}
+<h2>My Cart</h2>
+
+{% if cart_items %}
+<table>
+    <tr>
+        <th>Plant</th>
+        <th>Color</th>
+        <th>Variety</th>
+        <th>Climate</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+    </tr>
+
+    {% for item in cart_items %}
+    <tr>
+        <td>{{ item.plant.name }}</td>
+        <td>{{ item.plant.color }}</td>
+        <td>{{ item.plant.variety }}</td>
+        <td>{{ item.plant.climate }}</td>
+        <td>${{ item.plant.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ item.plant.price * item.quantity }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Total: ${{ total }}</h3>
+
+<form method="post" action="{{ url_for('order_submit') }}">
+    <button type="submit">Order Now</button>
+</form>
+
+{% else %}
+<p>Your cart is empty.</p>
+{% endif %}
+
+{% endblock %}

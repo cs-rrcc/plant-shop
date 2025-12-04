@@ -13,9 +13,9 @@ def role_required(role):
         @wraps(f)
         def decorator(*args, **kwargs):
             allowed_role = role
-            user_role = current_user.role.lower()
+            user_role = current_user.role.value
             if user_role != allowed_role:
-                return redirect(url_for('display_error'))
+                return redirect(url_for('error_page'))
             return f(*args, **kwargs)
         return decorator
     return wrapper

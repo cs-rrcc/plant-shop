@@ -16,11 +16,13 @@
         <a href="{{ url_for('index') }}">Home</a>
         
         {% if current_user.is_authenticated %}
-            {% if current_user.role == 'horticulturist' %}
-                <a href="{{ url_for('seller_dashboard') }}">Seller Dashboard</a>
+            {% if current_user.role.value == 'horticulturist' %}
+                <a href="{{ url_for('seller_dashboard') }}">My Dashboard</a>
                 <a href="{{ url_for('create_plant') }}">Create Plant</a>
             {% else %}
-                <a href="{{ url_for('customer_dashboard') }}">Customer Dashboard</a>
+                <a href="{{ url_for('customer_dashboard') }}">Plant Listings</a>
+                <a href="{{ url_for('view_cart') }}">My Cart</a>
+                <a href="{{ url_for('view_orders') }}">My Orders</a>
             {% endif %}
             <a href="{{ url_for('logout') }}">Logout</a>
         {% else %}
@@ -60,7 +62,7 @@
         const flashContainer = document.getElementById('flash-messages');
         if (!flashContainer || !flashContainer.children.length) return;
 
-        setTimeout(() => flashContainer.style.display = 'none', 5000);
+        setTimeout(() => flashContainer.style.display = 'none', 2500);
     });
 </script>
 {% endblock %}

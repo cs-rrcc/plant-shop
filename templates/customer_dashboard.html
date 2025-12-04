@@ -3,4 +3,71 @@
     {{ super() }}
 {% endblock %}
 {% block main %}
+    <h2>Plants for Sale</h2>
+    <form method="post" action="" novalidate>
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.variety.label}}
+            {{ form.variety() }}
+        </div>
+
+        <div>
+            {{ form.climate.label }}
+            {{ form.climate() }}
+        </div>
+
+        <div>
+            {{ form.submit }}
+        </div>
+
+    </form>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Variety</th>
+            <th>Climate</th>
+            <th>Quantity</th>
+            <th colspan="2">Price</th>
+        </tr>
+
+    {% if listings %}
+        {% for listing in listings %}
+            <tr>
+                <td> {{listing.name}} </td>
+                <td> {{listing.color}} </td>
+                <td> {{listing.variety}} </td>
+                <td> {{listing.climate}} </td>
+                <td> {{listing.quantity}} </td>
+                <td> {{listing.price}} </td>
+                <td>
+                    <form method="post" action="{{ url_for('add_to_cart') }}">
+                        <input type="hidden" name="plant_id" value="{{ listing.id }}">
+                        <input
+                            class="input-secondary"
+                            type="number"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            max="{{ listing.quantity }}"
+                        >
+                        <button class="input-secondary" type="submit">Add to Cart</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}    
+    {% else %}
+            <tr>
+                <td>
+                    {% if form.validate_on_submit %}
+                        No plants fall under these categories.
+                    {% else %}
+                        No plants have been listed yet, check back later!
+                    {% endif %}
+                </td>
+            </tr>
+    {% endif %}
+    </table>
+
 {% endblock %}

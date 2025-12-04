@@ -11,7 +11,7 @@ app.secret_key = 'green thumbs'
 
 
 from flask_sqlalchemy import SQLAlchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ctf.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///plant_shop.db'
 db = SQLAlchemy(app)
 
 

@@ -20,7 +20,7 @@ class Plant {
     - variety: String
     - climate: String
     - quantity: integer
-    - price: double
+    - price: numeric
     - sellerId: integer
 }
 
@@ -31,31 +31,34 @@ enum CartStatus {
 
 class Cart {
     - *id: integer
+    - cartStatus: CartStatus 
     - customerId: integer
-    - cartStatus: CartStatus
 }
 
 class CartItem {
     - *id: integer
-    - price: double
     - quantity: integer
+    - plantId: integer
+    - cartId: integer
 }
 
 class Order {
     - *id: integer
     - orderDate: DateTime
-    - status: OrderStatus
+    - orderTotalItemAmount: integer
+    - orderCost: numeric
     - customerId: integer
 }
 
 class OrderItem {
     - *id: integer
-    - price: double
     - quantity: integer
+    - orderId: integer
+    - plantId: integer
 }
 
 User "1" *-- "0..*" Plant: sells
-User "1" o-- "0..*" Cart : has
+User "1" o-- "0..1" Cart : has
 User "1" o-- "0..*" Order: orders
 
 Cart "1" *-- "0..*" CartItem : holds
