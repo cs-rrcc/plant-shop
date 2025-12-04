@@ -1,6 +1,7 @@
 """
 Author: Mckenna
-Description:
+Description: A customer wrapper class that confirms
+if the user has the required role to access a route.
 """
 
 from functools import wraps

@@ -349,11 +349,19 @@ def order_submit():
         return redirect(url_for('error_page'))
 
 
-def get_orders(customer_id: int):
+def get_all_orders(customer_id: int):
     return (
         Order.query.filter_by(customer_id=customer_id)
         .order_by(Order.order_date.asc())
         .all()
+    )
+
+
+def get_current_order(order_id: int, customer_id: int):
+    return (
+        Order.query
+        .filter_by(id=order_id, customer_id=customer_id)
+        .first()
     )
 
 
@@ -369,7 +377,7 @@ def get_order_items(order_id: int):
 @login_required
 @role_required('customer')
 def view_orders():
-    orders = get_orders(current_user.id)
+    orders = get_all_orders(current_user.id)
     return render_template('view_orders.html', orders=orders)
 
 
@@ -377,11 +385,7 @@ def view_orders():
 @login_required
 @role_required('customer')
 def view_items_in_order(order_id):
-    order = (
-        Order.query
-        .filter_by(id=order_id, customer_id=current_user.id)
-        .first()
-    )
+    order = get_current_order(order_id, current_user.id)
 
     if order is None:
         flash("Order not found.", "Error")
