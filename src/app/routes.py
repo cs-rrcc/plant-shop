@@ -396,7 +396,6 @@ def view_items_in_order(order_id):
     )
 
 
-
 @app.route('/mydashboard', methods=['GET', 'POST'])
 @login_required
 @role_required('horticulturist')
