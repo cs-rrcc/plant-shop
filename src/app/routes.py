@@ -376,8 +376,24 @@ def view_orders():
 @app.route('/myorders/<int:order_id>/invoice', methods=['GET'])
 @login_required
 @role_required('customer')
-def view_items_in_order():
-    return None
+def view_items_in_order(order_id):
+    order = (
+        Order.query
+        .filter_by(id=order_id, customer_id=current_user.id)
+        .first()
+    )
+
+    if order is None:
+        flash("Order not found.", "Error")
+        return redirect(url_for('view_orders'))
+
+    order_items = get_order_items(order_id)
+
+    return render_template(
+        'view_items_in_order.html',
+        order=order,
+        order_items=order_items
+    )
 
 
 @app.route('/mydashboard', methods=['GET', 'POST'])

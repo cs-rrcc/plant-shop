@@ -1,6 +1,38 @@
 {% extends 'base.html' %}
-{% block header %}
-    {{ super() }}
-{% endblock %}
+
 {% block main %}
+<h2>My Orders</h2>
+
+{% if orders %}
+<table>
+    <tr>
+        <th>Order #</th>
+        <th>Date</th>
+        <th>Total Items</th>
+        <th>Total Cost</th>
+        <th>View</th>
+    </tr>
+
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>
+            {{ order.order_date.strftime("%b %d, %Y %I:%M %p") }}
+        </td>
+        <td>{{ order.order_total_item_amount }}</td>
+        <td>${{ "%.2f"|format(order.order_cost) }}</td>
+        <td>
+            <a href="{{ url_for('view_items_in_order', order_id=order.id) }}">
+                <button>View Items</button>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+<p>You don't have any orders yet.</p>
+{% endif %}
+
 {% endblock %}
+

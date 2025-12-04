@@ -1,0 +1,44 @@
+﻿<h2{% extends 'base.html' %}
+
+{% block main %}
+<h2>Order #{{ order.id }}</h2>
+
+{% if order_items %}
+<table>
+    <tr>
+        <th>Plant</th>
+        <th>Color</th>
+        <th>Variety</th>
+        <th>Climate</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+    </tr>
+
+    {% for item in order_items %}
+    <tr>
+        <td>{{ item.plant.name }}</td>
+        <td>{{ item.plant.color }}</td>
+        <td>{{ item.plant.variety }}</td>
+        <td>{{ item.plant.climate }}</td>
+        <td>${{ item.plant.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ item.plant.price * item.quantity }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>
+    Total: $
+    {{
+        "%.2f" | format(order.order_cost)
+    }}
+</h3>
+
+{% else %}
+<p>No items found for this order.</p>
+{% endif %}
+
+<a href="{{ url_for('view_orders') }}">← Back to Orders</a>
+{% endblock %}
+
