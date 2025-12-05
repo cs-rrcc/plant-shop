@@ -7,5 +7,5 @@ bcrypt
 email-validator
 pytz
 pytest
-selenium
 webdriver-manager
+coverage

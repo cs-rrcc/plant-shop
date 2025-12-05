@@ -90,69 +90,93 @@ In this section, share the results of the tests performed to verify the quality 
 
 ### Black Box Testing Results
 
-For black-box testing, we implemented an automated Selenium test that exercised functionality exactly how a real user would, without referencing internal code or database logic.
+Black-box testing evaluates functionality from the user’s perspective without relying on knowledge of internal implementation details.
 
-**Tested User Story:**
-As a visitor, I want to see a clear welcome message and navigation options on the home page so I know what the site is and how to log in or sign up.
+### Test Name
 
-**Test Name:**
-`test_blackbox_homepage`
+`test_blackbox_inventory_and_cart`
 
-**Method:**
+### Purpose
 
-- Opened the public home page (`/`) in headless Chrome via Selenium WebDriver.
-- Verified visible UI elements including `<h1>` site title, welcome message text, and expected navigation links for non-authenticated visitors.
+To verify that customers only interact with valid inventory and that cart operations behave correctly through normal HTTP usage.
 
-**Expected Results:**
+### Method
 
-- Page title: **“Unbeleafable Plant Shop”**
-- Welcome message visible (`"Welcome to your one-stop plant shop!"`)
-- Navigation options: **Home**, **Login**, **Sign Up**
+* Uses Flask’s built-in test client to simulate a logged-in customer.
+* Sends real GET and POST requests to application routes such as:
+  * `/buyplants`
+  * `/mycart/add`
+  * `/mycart`
 
-**Actual Results:**
-✔️ **Passed** — Selenium confirmed that expected UI elements appear correctly and the system responds with the appropriate public navigation state.
-This confirms that the core landing page experience behaves correctly from the perspective of an anonymous, external user.
+### Assertions
+
+✔ **Only plants with `quantity > 0` appear** on the customer dashboard.
+
+✔ A customer may **add an in-stock plant to their cart** using `/mycart/add`.
+
+✔ The **cart page displays correct name, quantity, and total cost** after the item is added.
+
+### Behavior Verified
+
+* Out-of-stock plants (`quantity == 0`) are never listed for purchase.
+* Normal cart flow functions correctly with valid inventory.
+
+Because this test interacts only through route requests and rendered HTML output, without calling internal helper functions, this is a **black-box test** .
 
 ---
 
 ### White Box Testing Results
 
-White-box testing for this project focused on validating the internal logic and data handling of the application rather than just the visible user interface. Instead of treating the system as a black box, we used our knowledge of the routes, models, and conditional logic in the code to design targeted tests and confirm that the implementation behaved as intended.
+White-box testing examines internal implementation details and tests logic directly based on knowledge of the code structure.
 
-**Inventory Filtering (Quantity > 0)**One of the key business rules in the system is that customers should only be able to see and purchase plants that are actually in stock. We reviewed the query logic used to populate the customer plant listings and confirmed that it filters out plants whose quantity is 0. To validate this behavior, we:
+### Test Name
 
-- Manually created two plant records as a horticulturist:
-  - Plant A with a positive quantity (e.g., 5)
-  - Plant B with quantity set to 0
-- Logged in as a customer and opened the plant listings page.
-- Verified that Plant A appeared in the listings while Plant B did not.
+`test_whitebox_inventory`
 
-Because we designed this test based on the known implementation detail (the quantity filter in the backend query), this is considered white-box testing. It confirms that the internal rule for hiding out-of-stock plants is enforced correctly in the customer view.
+### Purpose
 
-**Role-Based Navigation and Dashboards**We also applied white-box testing to verify the conditional navigation and dashboard rendering based on user roles defined in the code. The `base.html` template and route handlers use the authenticated user’s role (horticulturist vs. customer) to decide which links and pages are shown. Using this knowledge, we tested the following:
+To verify that the backend function responsible for listing plants correctly filters out plants with zero quantity before sending results to any UI layer.
 
-- Created a horticulturist account and logged in to confirm that:
-  - The navigation bar displayed **My Dashboard** and **Create Plant**.
-  - The horticulturist dashboard correctly listed that user’s plant inventory.
-- Created a customer account and logged in to confirm that:
-  - The navigation bar displayed **Plant Listings**, **My Cart**, and **My Orders**.
-  - The customer view did not expose seller-only actions such as creating plants.
+### Method
 
-These tests relied on understanding how `current_user.role` is checked in the templates and routes. By combining code inspection with targeted manual interaction, we confirmed that role-based access and navigation are implemented correctly and that users only see features appropriate to their role.
+* Calls the internal helper function `get_all_plant_listings()` directly.
+* Creates a controlled test database with three plants:
+  * Two in-stock plants (`quantity > 0`)
+  * One out-of-stock plant (`quantity == 0`)
 
----
+### Assertions
+
+✔ Returned listings contain **only plants where `quantity > 0`**
+
+✔ IDs of in-stock plants appear in the result set
+
+✔ ID of the out-of-stock plant **does not** appear in the result set
+
+Because this test inspects return values from the application’s internal code path rather than the UI, it is a  **true white-box test** .
 
 ### Test Coverage Results
 
-Although no minimum coverage requirement was specified, our automated testing achieved coverage in two critical dimensions:
+Coverage was generated using Python’s `coverage` tool.
 
-- **Black-box coverage:** validated public UI functionality and anonymous navigation
-- **White-box coverage:** validated backend logic for inventory filtering and authenticated user navigation
+### Commands Used
 
-Current automated test coverage exercises:
+`coverage run -m unittest discover tests`
 
-- Public landing page rendering
-- Navbar conditional logic based on user authentication
+`coverage html`
+
+This creates the `htmlcov/` directory, including an `index.html` file that shows line-by-line coverage information.
+
+### Coverage Highlights
+
+* Internal inventory filtering logic exercised
+* Customer dashboard and cart flow executed through route calls
+
+Together, these tests provide both:
+
+* **White-box coverage** of core business logic
+* **Black-box coverage** of user-facing shopping functionality
+
+---
 
 ### Manual Testing Results
 
