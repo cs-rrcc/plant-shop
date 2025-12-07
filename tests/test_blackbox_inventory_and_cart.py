@@ -1,6 +1,6 @@
 """
-Black-box tests for customer dashboard and cart behavior.
-
+Author: Kobe
+Description: Black-box tests for customer dashboard and cart behavior.
 Focus:
     - From the user's perspective, verify that only in-stock plants
       are visible on the customer dashboard.
@@ -15,15 +15,14 @@ import os
 import sys
 import unittest
 from decimal import Decimal
+from app import app, db
+from app.models import User, UserRole, Plant
 
 # Make sure Python can find src/app as the `app` package
 CURRENT_DIR = os.path.dirname(__file__)
 SRC_PATH = os.path.join(CURRENT_DIR, "..", "src")
 if SRC_PATH not in sys.path:
     sys.path.insert(0, SRC_PATH)
-
-from app import app, db
-from app.models import User, UserRole, Plant
 
 
 class TestBlackBoxInventoryAndCart(unittest.TestCase):

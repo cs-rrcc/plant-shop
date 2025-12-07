@@ -1,6 +1,6 @@
 """
-White-box test for internal inventory visibility logic.
-
+Author: Kobe
+Description: White-box test for internal inventory visibility logic.
 Focus:
     - Ensure that the internal helper function get_all_plant_listings()
       only returns plants with quantity > 0.
@@ -12,16 +12,15 @@ import os
 import sys
 import unittest
 from decimal import Decimal
+from app import app, db
+from app.models import User, UserRole, Plant
+from app.routes import get_all_plant_listings
 
 # Make sure Python can find src/app as the `app` package
 CURRENT_DIR = os.path.dirname(__file__)
 SRC_PATH = os.path.join(CURRENT_DIR, "..", "src")
 if SRC_PATH not in sys.path:
     sys.path.insert(0, SRC_PATH)
-
-from app import app, db
-from app.models import User, UserRole, Plant
-from app.routes import get_all_plant_listings
 
 
 class TestWhiteBoxInventory(unittest.TestCase):

@@ -1,12 +1,15 @@
 """
-Author(s):
-Description:
+Author: Mckenna
+Description: The classes defined in this file
+create the application's objects and their relationships
+These objects include the user, plant, cart, cart items,
+order, order items, and several enums and data constraints.
 """
 
 from flask_login import UserMixin
 from enum import Enum as py_enum
 from sqlalchemy import Enum as SQL_enum
-from sqlalchemy.orm import Mapped, mapped_column, validates
+from sqlalchemy.orm import validates
 from app import db
 
 

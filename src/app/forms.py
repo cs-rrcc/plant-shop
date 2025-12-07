@@ -1,6 +1,10 @@
 """
-Author(s):
-Description:
+Author: Mckenna
+Description: The classes in this file define the
+Flask-WTF form objects used to collect input from
+users. This input is used to create users,
+login users, create plants, and help customers
+view plants by category.
 """
 
 from flask_wtf import FlaskForm

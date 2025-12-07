@@ -90,7 +90,7 @@ Given that I am logged in and have made a purchase, when I select the "My Orders
 
 ### Development Summary Table
 
-The table included is a summary of all the sprints conducted to build Unbeleafable. The observations for each sprint outline the outcome of the sprint and the difficulties that were overcome. To view more information about the team's agile workflow, view the contents of the [Scrum folder](scrum/). It contains the product backlog, the burndown chart, and all of the notes taken during sprint daily stand-ups, planning, review, and retrospective meetings. 
+The table included is a summary of all the sprints conducted to build Unbeleafable. The observations for each sprint outline the outcome of the sprint and the difficulties that were overcome. To view more information about the team's agile workflow, view the contents of the [Scrum folder](scrum/). It contains the product backlog, the burndown chart, and all of the notes taken during sprint daily stand-ups, planning, review, and retrospective meetings.
 
 | Sprint# | Goals            | Start    | End      | Done             | Observations                                                                                                                                                                                                                                                                                                                                                                     |
 | ------- | ---------------- | -------- | -------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -182,10 +182,7 @@ This creates the `htmlcov/` directory, including an `index.html` file that shows
 
 * Internal inventory filtering logic exercised.
 * Customer dashboard and cart flow executed through route calls.
-* Both tests covered 70% of the codebase.
-
-Together, these tests provide both:
-
+* Both tests covered 70% of the codebase.Together, these tests provide both:
 * **White-box coverage** of core business logic.
 * **Black-box coverage** of user-facing shopping functionality.
 
