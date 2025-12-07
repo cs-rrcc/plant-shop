@@ -51,7 +51,6 @@ Assigned Sprint Work:
 * Andrew: View cart route and HTML page, and applying cart at checkout functionality.
 * Mckenna: Scrum notes, cart model, cart item model, object model, object item model, HTML for customer dashboard, form for categories on customer dashboard, get plants by category function, start customer dashboard route, order creation route, and function decomposition for all the add to cart and order creation code.
 
-
 # Daily Scrums
 
 ## 11/26/25-14:40
@@ -184,7 +183,7 @@ Overall Notes:
 
 # Sprint Review
 
-## 12/2/25-15:45
+## 12/02/25-15:45
 
 Participants: Andrew, Kobe, and Mckenna
 
@@ -199,7 +198,7 @@ Notes/Topics Discussed:
 
 # Sprint Retrospective
 
-## 12/2/25-16:05
+## 12/02/25-16:05
 
 Participants: Andrew, Kobe, and Mckenna
 

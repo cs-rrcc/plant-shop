@@ -9,6 +9,7 @@ Participants: Andrew, Mckenna, and Kobe
 * Condensed Overview Statement:
   * The goal of this project is to develop a web application that optimizes the sale, purchase, and distribution of plants, flowers, and other greenery.
 * The six user stories will be in the README and a separate product backlog file will be created as well.
+* 32 story points are anticipated to be spent during the three sprints. Therefore, the values used in the "ideal" column of the burndown chart will be calculated by dividing "32/3". This equates to approximately 10.66-10.67 points spent per sprint.
 * Deployment will be tested with each sprint but testing, both white box and black box, will be implemented across the multiple sprints.
 
 # Sprint Planning
