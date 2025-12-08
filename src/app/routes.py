@@ -274,11 +274,16 @@ def view_cart():
     cart = current_user.cart
 
     ok, message = validate_cart_items_in_cart(cart)
-    if not ok:
-        flash(message, "Error")
-        fix_item_quantity_before_checkout(cart)
-        db.session.commit()
-        return redirect(url_for('view_cart'))
+    try:
+        if not ok:
+            flash(message, "Error")
+            fix_item_quantity_before_checkout(cart)
+            db.session.commit()
+            return redirect(url_for('view_cart'))
+    except (ValueError, SQL_Execution_Error):
+        db.session.rollback()
+        flash("Error processing cart.", "Error")
+        return redirect(url_for('error_page'))
 
     if cart is None or not cart.cart_items:
         return render_template("view_cart.html", cart_items=[], total="0.00")
@@ -354,7 +359,6 @@ def order_submit():
 
     except SQL_Execution_Error:
         db.session.rollback()
-
         flash("Error processing your order.", "Error")
         return redirect(url_for('error_page'))
 
