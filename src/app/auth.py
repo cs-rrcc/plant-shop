@@ -1,6 +1,9 @@
 """
 Author: Mckenna
-Description:
+Description: A custom wrapper class that confirms
+if the user has the required role to access the route.
+The '@role_required(role)' decorator implements this
+wrapper.
 """
 
 from functools import wraps

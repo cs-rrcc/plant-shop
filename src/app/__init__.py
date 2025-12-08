@@ -1,6 +1,8 @@
 """
 Author: Mckenna
-Description:
+Description: This file initializes the Flask application,
+instantiates the required Flask objects, defines module
+imports, and sets up the Flask application's configuration.
 """
 
 from flask import Flask
@@ -34,4 +36,3 @@ def load_user(id):
         return None
 
 from app import routes
-

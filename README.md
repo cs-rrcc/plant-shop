@@ -1,56 +1,80 @@
 # Overview of Unbeleafable
 
-The Unbeleafable Plant Shop is an online marketplace that connects horticulturists with customers who want to buy plants. Sellers can create listings, manage inventory, and track sales, while customers can browse plants, filter by category, make purchases, and view past orders. The system provides a simple, convenient interface for both buyers and growers, targeting local plant sellers and customers looking to build or expand their gardens.
+The Unbeleafable Plant Shop is an online marketplace that was designed to connect local horticulturists with customers who want to buy plants through a simple platform. Sellers can create listings, manage inventory, and track sales, while customers can browse plants, filter by category, make purchases, and view past orders. The system provides a straightforward, convenient interface for both buyers and growers, empowering local plant sellers and customers who are looking to build or expand their gardens.
+
+## Use Case Diagram of Unbeleafable
 
 ![Unbeleafable Use Case Diagram](uml/case_diagram.png "Unbeleafable Use Case Diagram")
 
----
-
 # Design
-
----
 
 ## User Stories
 
-This section describes the user stories identified for the project.
+This section describes the crucial user stories identified for the Unbeleafable project.
 
 ### User Story #1: User Registration
 
+---
+
 #### Allotted Story Points: 1
 
-As a new user of the system, I want to register for the plant store platform by providing my name, a unique email address, a password, and my role as a horticulturist or customer so that I can either sell or buy plants based on my role. Given that I have supplied all of the required information in the sign-up page, when I hit the "Submit" button, then my account should be created and stored in the system.
+As a new user of the system, I want to register for the plant store platform by providing my name, a unique email address, a password, and my role as a horticulturist or customer so that I can either sell or buy plants based on my role.
+
+Given that I have supplied all of the required information in the sign-up page, when I hit the "Submit" button, then my account should be created and stored in the system.
 
 ### User Story #2: View Plant Inventory
 
+---
+
 #### Allotted Story Points: 2
 
-As a logged-in horticulturist, I want to view all of the plants I have for sale and the plants my competitors have for sale so that I can evaluate the market, update my plant listings, and sell plants I have grown at a competitive price all in one interface. Given that I am logged in, when the plant dashboard loads, then I can see all of the plants available for sale organized in a convenient format.
+As a logged-in horticulturist, I want to view all of the plants I have that are for sale or are out of stock, and the plants my competitors have for sale so that I can evaluate the market, update my plant listings, and sell plants I have grown at a competitive price all in one interface.
+
+Given that I am logged in, when the plant dashboard loads, then I can see all of the plants stored in the system that are available for sale organized in a convenient format.
 
 ### User Story #3: New Plants for Sale
 
+---
+
 #### Allotted Story Points: 3
 
-As a logged-in horticulturist, I want to create a plant listing with information about the plant's name, color, variety, quantity, required climate, and price, so that I can publish a plant listing and sell it to customers. Given that I am logged in and have entered the required plant information, when I hit the "List" button, then the plant is saved into the system and can be purchased by customers.
+As a logged-in horticulturist, I want to create a plant listing with information about the plant's name, color, variety, quantity, required climate, and price, so that I can publish a plant listing and sell it to customers.
+
+Given that I am logged in and have entered the required plant information, when I hit the "List" button, then the plant listing is saved in the system.
 
 ### User Story #4: View Plants for Sale
 
+---
+
 #### Allotted Story Points: 8
 
-As a customer, I want to view all the plants for sale at the same time or by a specific category so that I can purchase plants and start a garden. Given that I am logged in and on the sale page, when I select the category of plants I want to look at and click the category I want, then a list of plants for sale will be displayed based on the selected category.
+As a logged-in customer, I want to view all the plants for sale at once or by a specific category so that I can purchase plants and start a garden.
+
+Given that I am logged in and on the "Plant Listings" page, when I first load the webpage, then I see a list of all plants currently for sale in the system.
+
+Given that I am logged in and on the "Plant Listings" page, when I select the category/categories of plants I want to look at and click the "Browse" button, then a list of plants for sale in the system will be displayed based on the selected category/categories.
 
 ### User Story #5: Purchase Plants
 
+---
+
 #### Allotted Story Points: 13
 
-As a customer, I want to add plants to my cart and purchase them so I can start my garden. Given that I am logged in, the plant being selected is in stock, the plant has been added to my cart, and I am viewing my cart page, when the button "Order Now" has been clicked, then I have purchased the plants and the system records the purchase.
+As a logged-in customer, I want to add plants to my cart and purchase them so I can start my garden.
+
+Given that I am logged in and the plant(s) being selected are in stock, when the "Add to Cart" button has been clicked, then the plant has been added to my cart and I can view it in the "My Cart" page.
+
+Given that I am logged in and the plants in my cart are in stock, when the "Order Now" button has been clicked, then I have purchased the plants and the system records the purchase.
 
 ### User Story #6: View Plant Invoice
 
+---
+
 #### Allotted Story Points: 5
 
-As a customer, I want to view my previous plant orders so that I can keep track of what types of plants I have purchased. Given that I am logged in and have made a purchase, when I select the "view recent orders" page, then I can view a list of all my orders organized by order date.
+As a logged-in customer, I want to view my previous plant orders so that I can keep track of what types of plants I have purchased.
 
----
+Given that I am logged in and have made a purchase, when I select the "My Orders" page, then I can view a list of all my previous orders organized by order date.
 
 ## Sequence Diagram
 
@@ -58,103 +82,113 @@ As a customer, I want to view my previous plant orders so that I can keep track 
 
 ![Sequence Diagram](uml/sequence_diagram.png "Sequence Diagram")
 
----
-
 ## Class Model Diagram
 
 ![Class Model Diagram](uml/class_diagram.png "Class Model Diagram")
 
----
-
 # Development Process
 
-This section should describe, in general terms, how Scrum was applied in the project. Include a table summarizing the division of the project into sprints, the **user story** goals planned for each sprint, the ones actually completed, and the start and end dates of each sprint. You may also add any relevant observations or reflections about the sprints as you see fit.
+### Development Summary Table
 
-| Sprint# | Goals            | Start    | End      | Done             | Observations                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ------- | ---------------- | -------- | -------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1       | US#1, US#2, US#3 | 11/19/25 | 11/25/25 | US#1, US#2, US#3 | It was tedious for the group<br />to plan the whole project, <br />refine all the user stories,<br />and build the project<br />files from the ground<br />up. Although everything was<br />completed in time, it was difficult<br />to focus on design and <br />implementation<br />at the same time.                                                                                                             |
-| 2       | US#4, US#5       | 11/25/25 | 12/2/25  | US#4, US#5       | User story four was relatively<br />simple to implement while user<br />story five took up most of this<br />sprint. Some design adjustments<br />were made to better align with<br />the implementation of the user<br />stories. This sprint was considered <br />difficult because implementing <br />user story five proved to be a complex<br />task and project work had to be<br />coordinated over a break. |
-| 3       |                  |          |          |                  |                                                                                                                                                                                                                                                                                                                                                                                                                       |
+The table included is a summary of all the sprints conducted to build Unbeleafable. The observations for each sprint outline the outcome of the sprint and the difficulties that were overcome. To view more information about the team's agile workflow, view the contents of the [Scrum folder](scrum/). It contains the product backlog, the burndown chart, and all of the notes taken during sprint daily stand-ups, planning, review, and retrospective meetings.
 
-As in Project 2, you should take notes on the major Scrum meetings: planning, daily scrums, review, and retrospective. These meetings are essential for tracking progress, identifying obstacles, and ensuring continuous improvement. Use the Scrum folder and the shared templates to record your notes in an organized and consistent manner.
+| Sprint# | Goals            | Start    | End      | Done             | Observations                                                                                                                                                                                                                                                                                                                                                                     |
+| ------- | ---------------- | -------- | -------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | US#1, US#2, US#3 | 11/19/25 | 11/25/25 | US#1, US#2, US#3 | It was tedious for the group to plan the whole project, refine all the user stories, and build the project files from the ground up. Although everything was completed in time, it was difficult to focus on design and implementation at the same time.                                                                                                                       |
+| 2       | US#4, US#5       | 11/25/25 | 12/02/25 | US#4, US#5       | User story four was quicker to implement than expected while user story five took up most of this sprint. Some design adjustments were made to better align with the implementation of the user stories. This sprint was considered difficult because implementing user story five proved to be a complex task. Furthermore, it was tough to coordinate project work over break. |
+| 3       | US#6             | 12/02/25 | 12/07/25 | US#6             | Implementing the last user story was a relatively smooth process. Since Docker deployment was continuously tested, deploying the entire project with Docker went well. The most challenging part of this sprint was polishing up the notes, README, and the code to ensure readability and compliancy with PEP-8.                                                                |
 
-Embed an image of the burndown chart here.
+### Burndown Chart
+
+The image below depicts the burndown chart generated from each sprint's progress. The "Ideal" column shows the ideal story points remaining after each sprint. For this project, the ideal remaining values were calculated using a constant rate of approximately 10.67.
 
 ![Scrum Burndown Chart](scrum/burndown_chart.png "Scrum Burndown Chart")
 
----
-
 # Testing
 
-In this section, share the results of the tests performed to verify the quality of the developed product, including the test coverage relative to the written code. Test coverage indicates how much of your code is exercised by tests, helping assess reliability. There is no minimum coverage requirement, but ensure there is at least some coverage through one white-box test (which examines internal logic and structure) and one black-box test (which validates functionality from the user’s perspective).
+## Black Box Testing Results
 
-### Black Box Testing Results
+Black-box testing evaluates functionality from the user’s perspective without relying on knowledge of internal implementation details. The following test interacts only through route requests and rendered HTML output, without calling internal helper functions.
 
-For black-box testing, we implemented an automated Selenium test that exercised functionality exactly how a real user would, without referencing internal code or database logic.
+### Test Name
 
-**Tested User Story:**
-As a visitor, I want to see a clear welcome message and navigation options on the home page so I know what the site is and how to log in or sign up.
+`test_blackbox_inventory_and_cart`
 
-**Test Name:**
-`test_blackbox_homepage`
+### Purpose
 
-**Method:**
+To verify that customers only interact with valid inventory and that cart operations behave correctly through normal HTTP usage.
 
-- Opened the public home page (`/`) in headless Chrome via Selenium WebDriver.
-- Verified visible UI elements including `<h1>` site title, welcome message text, and expected navigation links for non-authenticated visitors.
+### Method
 
-**Expected Results:**
+* Uses Flask’s built-in test client to simulate a logged-in customer.
+* Sends real GET and POST requests to application routes such as:
+  * `/buyplants`
+  * `/mycart/add`
+  * `/mycart`
 
-- Page title: **“Unbeleafable Plant Shop”**
-- Welcome message visible (`"Welcome to your one-stop plant shop!"`)
-- Navigation options: **Home**, **Login**, **Sign Up**
+### Assertions
 
-**Actual Results:**
-✔️ **Passed** — Selenium confirmed that expected UI elements appear correctly and the system responds with the appropriate public navigation state.
-This confirms that the core landing page experience behaves correctly from the perspective of an anonymous, external user.
+✔ **Only plants with `quantity > 0` appear** on the customer dashboard.
 
----
+✔ A customer may **add an in-stock plant to their cart** using `/mycart/add`.
 
-### White Box Testing Results
+✔ The **cart page displays correct name, quantity, and total cost** after the item is added.
 
-White-box testing for this project focused on validating the internal logic and data handling of the application rather than just the visible user interface. Instead of treating the system as a black box, we used our knowledge of the routes, models, and conditional logic in the code to design targeted tests and confirm that the implementation behaved as intended.
+### Behavior Verified
 
-**Inventory Filtering (Quantity > 0)**One of the key business rules in the system is that customers should only be able to see and purchase plants that are actually in stock. We reviewed the query logic used to populate the customer plant listings and confirmed that it filters out plants whose quantity is 0. To validate this behavior, we:
+* Out-of-stock plants (`quantity == 0`) are never listed for purchase.
+* Normal cart flow functions correctly with valid inventory.
 
-- Manually created two plant records as a horticulturist:
-  - Plant A with a positive quantity (e.g., 5)
-  - Plant B with quantity set to 0
-- Logged in as a customer and opened the plant listings page.
-- Verified that Plant A appeared in the listings while Plant B did not.
+## White Box Testing Results
 
-Because we designed this test based on the known implementation detail (the quantity filter in the backend query), this is considered white-box testing. It confirms that the internal rule for hiding out-of-stock plants is enforced correctly in the customer view.
+White-box testing examines internal implementation details and tests logic directly based on knowledge of the code structure. The following test inspects returned values from the application’s internal code path rather than the UI.
 
-**Role-Based Navigation and Dashboards**We also applied white-box testing to verify the conditional navigation and dashboard rendering based on user roles defined in the code. The `base.html` template and route handlers use the authenticated user’s role (horticulturist vs. customer) to decide which links and pages are shown. Using this knowledge, we tested the following:
+### Test Name
 
-- Created a horticulturist account and logged in to confirm that:
-  - The navigation bar displayed **My Dashboard** and **Create Plant**.
-  - The horticulturist dashboard correctly listed that user’s plant inventory.
-- Created a customer account and logged in to confirm that:
-  - The navigation bar displayed **Plant Listings**, **My Cart**, and **My Orders**.
-  - The customer view did not expose seller-only actions such as creating plants.
+`test_whitebox_inventory`
 
-These tests relied on understanding how `current_user.role` is checked in the templates and routes. By combining code inspection with targeted manual interaction, we confirmed that role-based access and navigation are implemented correctly and that users only see features appropriate to their role.
+### Purpose
 
----
+To verify that the backend function responsible for listing plants correctly filters out plants with zero quantity before sending results to any UI layer.
 
-### Test Coverage Results
+### Method
 
-Although no minimum coverage requirement was specified, our automated testing achieved coverage in two critical dimensions:
+* Calls the internal helper function `get_all_plant_listings()` directly.
+* Creates a controlled test database with three plants:
+  * Two in-stock plants (`quantity > 0`)
+  * One out-of-stock plant (`quantity == 0`)
 
-- **Black-box coverage:** validated public UI functionality and anonymous navigation
-- **White-box coverage:** validated backend logic for inventory filtering and authenticated user navigation
+### Assertions
 
-Current automated test coverage exercises:
+✔ Returned listings contain **only plants where `quantity > 0`**
 
-- Public landing page rendering
-- Navbar conditional logic based on user authentication
+✔ IDs of in-stock plants appear in the result set
 
-### Manual Testing Results
+✔ ID of the out-of-stock plant **does not** appear in the result set
+
+## Test Coverage Results
+
+Coverage was generated using Python’s `coverage` tool.
+
+### Commands Used
+
+`coverage run -m unittest discover tests`
+
+`coverage html`
+
+This creates the `htmlcov/` directory, including an `index.html` file that shows line-by-line coverage information.
+
+### Coverage Highlights
+
+* Internal inventory filtering logic exercised.
+* Customer dashboard and cart flow executed through route calls.
+* Both tests covered 70% of the codebase.Together, these tests provide both:
+* **White-box coverage** of core business logic.
+* **Black-box coverage** of user-facing shopping functionality.
+
+![Unbeleafable Test Coverage HTML Image](test_evidence/test_coverage.png)
+
+## Manual Testing Results
 
 | User Story | Feature/Function                   | Test Format   | Date     | Time  | Result |
 | ---------- | ---------------------------------- | ------------- | -------- | ----- | ------ |
@@ -162,8 +196,6 @@ Current automated test coverage exercises:
 | 1          | User Registration (Customer)       | Manual/Docker | 11/24/25 | 19:25 | Passed |
 | 2          | View Plant Inventory               | Manual/Docker | 11/24/25 | 19:22 | Passed |
 | 3          | Create Plant/New Plants for Sale   | Manual/Docker | 11/24/25 | 19:23 | Passed |
-|            |                                    |               |          |       |        |
-|            |                                    |               |          |       |        |
-|            |                                    |               |          |       |        |
-|            |                                    |               |          |       |        |
-|            |                                    |               |          |       |        |
+| 4          | View Plants by Category            | Manual/Docker | 11/28/25 | 13:20 | Passed |
+| 5          | Add to Cart and Submit Order       | Manual/Docker | 12/01/25 | 15:23 | Passed |
+| 6          | View Orders and Items Ordered      | Manual/Docker | 12/04/25 | 13:55 | Passed |
